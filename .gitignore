@@ -1,0 +1,6 @@
+*.o
+srcs/*.o
+srcs/exec/*.o
+srcs/utils/*.o
+libft
+./minishell
