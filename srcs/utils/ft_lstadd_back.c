@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/24 15:56:49 by mservage         ###   ########.fr       */
+/*   Created: 2020/12/02 13:15:02 by mservage          #+#    #+#             */
+/*   Updated: 2021/09/24 17:59:58 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "../minishell.h"
 
-# include "../minishell.h"
+void	ft_lstadd_back_env(t_env **alst, t_env *new)
+{
+	t_env	*temp;
 
-void	ft_execution(t_mini *mini);
-
-#endif
+	if (*alst == 0)
+	{
+		*alst = new;
+		return ;
+	}
+	temp = *alst;
+	while (temp)
+	{
+		if (temp->next == 0)
+		{
+			temp->next = new;
+			return ;
+		}
+		temp = temp->next;
+	}
+	return ;
+}

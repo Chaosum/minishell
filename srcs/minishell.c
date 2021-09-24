@@ -3,105 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/10 13:58:17 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/09/24 18:02:48 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_mini_struct_malloced(t_mini *mini)
-{
-	mini->malloced.env = NULL;
-}
-
 void	init_mini_struct_env(t_mini *mini, char **env)
 {
-	int	i;
+	t_env	*temp;
+	int		i;
 
 	i = 0;
 	mini->env = NULL;
-	mini->env = ft_calloc(ft_tab_size(env) + 1, sizeof(char *));
-	if (mini->env == NULL)
-		ft_error_exit("Memory error\n", mini);
-	mini->malloced.env = mini->env;
 	while (env[i])
 	{
-		mini->env[i] = ft_strdup(env[i]);
-		if (mini->env[i] == NULL)
-			ft_error_exit("Memory error\n", mini);
+		temp = ft_calloc(1, sizeof(t_env));
+		if (temp == NULL)
+			exit(666);
+		temp->value = ft_strdup(env[i]);
+		if (temp->value == NULL)
+			exit(666);
+		ft_lstadd_back_env(&mini->env, temp);
 		i++;
 	}
 }
 
 void	init_mini_struct(t_mini *mini, char **env)
 {
-	init_mini_struct_malloced(mini);
 	init_mini_struct_env(mini, env);
 }
 
-/* free a verifier */
-
-void	ft_add_env_var(t_mini *mini, char *env)
+int	parsing(t_mini *mini, char *line)
 {
-	int		i;
-	int		j;
-	int		size;
-	char	**temp;
-	char	**temp2;
-
-	i = 0;
-	j = 0;
-	size = ft_tab_size(mini->env);
-	temp = ft_calloc(size + 2, sizeof(char *));
-	while (mini->env[i])
-	{
-		temp[i] = ft_strdup(mini->env[i]);
-		if (temp[i] == NULL)
-			ft_error_exit("Malloc error\n", mini);
-		i++;
-	}
-	temp[i] = env;
-	ft_free_tab(mini->env);
-	mini->env = temp;
-}
-
-int	parsing(char *line, char **env)
-{
-	//input_execution(token, env);
+	ft_execution(mini);
 	return (0);
 }
 
-/* free a verifier */
-
 void	init_shell_level(t_mini *mini)
 {
-	char	*temp;
+	t_env	*temp;
 	int		value;
-	char	*value_char;
-	char	*temp2;
+	char	*content;
 
-	temp = get_env_var("SHLVL", mini->env);
+	temp = get_env_var("SHLVL", mini);
 	if (temp == NULL)
-		ft_add_env_var(mini, "SHLVL=1");
+		ft_add_env_var("SHLVL=1", mini);
 	else
 	{
-		value = ft_atoi(&temp[6]);
+		value = ft_atoi(&temp->value[6]);
+		if (value < 0)
+			value = 0;
 		value++;
-		value_char = ft_itoa(value);
-		if (value_char == NULL)
-			ft_error_exit("Malloc error\n", mini);
-		temp2 = ft_strjoin("SHLVL=", value_char);
-		if (temp2 == NULL)
-			ft_error_exit("Malloc error\n", mini);
-		free(value_char);
-		value_char = temp;
-		temp = ft_strdup(temp2);
-		if (temp == NULL)
-			ft_error_exit("Malloc error\n", mini);
-		free(temp2);
+		if (value > 999)
+			value = 0;
+		content = ft_itoa(value);
+		if (content == NULL)
+			exit(666);
+		change_env_var_value(mini, temp, content);
 	}
 }
 
@@ -119,7 +81,7 @@ int	main(int ac, char **av, char **env)
 	{
 		line = readline(prompt);
 		add_history(line);
-		parsing(line, env);
+		parsing(&mini, line);
 	}
 	return (1);
 }

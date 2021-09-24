@@ -6,9 +6,12 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/22 15:09:47 by mservage         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:56:38 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
+void	ft_execution(t_mini *mini)
+{
+}

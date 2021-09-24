@@ -1,20 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/24 15:56:49 by mservage         ###   ########.fr       */
+/*   Created: 2021/09/23 01:25:52 by mservage          #+#    #+#             */
+/*   Updated: 2021/09/24 16:16:17 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "../minishell.h"
 
-# include "../minishell.h"
+int	check_echo_arg(char **av)
+{
+	if (av[1])
+	{
+		if (ft_strncmp("-n", av[1], 3))
+			return (1);
+	}
+	return (0);
+}
 
-void	ft_execution(t_mini *mini);
+void	ft_echo(int ac, char **av)
+{
+	int	n_arg;
 
-#endif
+	n_arg = check_echo_arg(av);
+	if (n_arg)
+	{
+		printf("%s", av[2]);
+	}
+}

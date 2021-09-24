@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   first_memory_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/24 15:56:49 by mservage         ###   ########.fr       */
+/*   Created: 2021/09/24 15:40:06 by mservage          #+#    #+#             */
+/*   Updated: 2021/09/24 15:40:34 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "../minishell.h"
 
-# include "../minishell.h"
+void	ft_free_tab(char **tab)
+{
+	int	i;
 
-void	ft_execution(t_mini *mini);
-
-#endif
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab[i]);
+	free(tab);
+}

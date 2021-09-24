@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:09:03 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/10 14:08:21 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:41:11 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,47 +25,52 @@ int	ft_tab_size(char **tab)
 	return (i);
 }
 
-char	*get_env_var(char *get, char **env)
+t_env	*get_env_var(char *get, t_mini *mini)
 {
-	char	*dest;
+	t_env	*temp;
+
+	temp = mini->env;
+	while (temp)
+	{
+		if (!ft_strncmp(get, temp->value, ft_strlen(get)))
+			break ;
+		temp = temp->next;
+	}
+	return (temp);
+}
+
+void	ft_add_env_var(char *value, t_mini *mini)
+{
+	t_env	*temp;
+
+	temp = ft_calloc(1, sizeof(t_env));
+	if (temp == NULL)
+		exit(666);
+	temp->value = ft_strdup(value);
+	if (temp->value == NULL)
+		exit(666);
+	ft_lstadd_back_env(&mini->env, temp);
+}
+
+void	change_env_var_value(t_mini *mini, t_env *var, char *content)
+{
+	char	*temp;
 	int		i;
 
-	dest = NULL;
 	i = 0;
-	while (env[i] && ft_strncmp(get, env[i], ft_strlen(get)))
+	while (var->value[i] != '=' && var->value[i])
 		i++;
-	dest = env[i];
-	return (dest);
-}
-
-void	ft_free_all(t_malloc malloced)
-{
-	int	i;
-
+	temp = ft_calloc(i + ft_strlen(content) + 1, sizeof(char));
+	if (temp == NULL)
+		exit(666);
 	i = 0;
-	while (malloced.env[i])
-		free(malloced.env[i++]);
-	free(malloced.env);
-}
-
-int	ft_error_exit(char *msg, t_mini *mini)
-{
-	printf("%s\n", msg);
-	ft_free_all(mini->malloced);
-	exit(1);
-	return (1);
-}
-
-void	ft_free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
+	while (var->value[i] != '=' && var->value[i])
 	{
-		free(tab[i]);
+		temp[i] = var->value[i];
 		i++;
 	}
-	free(tab[i]);
-	free(tab);
+	temp[i] = var->value[i];
+	ft_strlcat(temp, content, i + ft_strlen(content));
+	free(var->value);
+	var->value = temp;
 }
