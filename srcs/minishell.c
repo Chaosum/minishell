@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/24 18:02:48 by mservage         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:21:10 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_mini_struct_env(t_mini *mini, char **env)
 
 void	init_mini_struct(t_mini *mini, char **env)
 {
+	mini->exec = NULL;
 	init_mini_struct_env(mini, env);
 }
 
