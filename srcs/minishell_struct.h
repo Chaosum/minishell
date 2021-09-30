@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_struct.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/28 15:20:45 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/09/30 02:37:15 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_redir
 {
 	char			*type;
 	char			*file;
+	int				fd;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -28,11 +29,22 @@ typedef struct s_arg
 	struct s_arg	*next;
 }					t_arg;
 
+typedef struct s_index_redir
+{
+	int		heredoc;
+	int		infile;
+	int		outfile;
+}							t_index_redir;
+
 typedef struct s_exec
 {
-	t_arg			*arg;
-	t_redir			*redir;
-	struct s_exec	*next;
+	t_arg					*arg;
+	t_redir					*redir;
+	char					*heredoc;
+	int						infile_fd;
+	int						outfile_fd;
+	struct s_index_redir	index;
+	struct s_exec			*next;
 }					t_exec;
 
 typedef struct s_env

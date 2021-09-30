@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/28 15:21:10 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/09/29 20:57:58 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int ac, char **av, char **env)
 	init_mini_struct(&mini, env);
 	init_shell_level(&mini);
 	line = NULL;
-	prompt = "$minishell>";
+	prompt = "$minishell> ";
 	while (1)
 	{
 		line = readline(prompt);

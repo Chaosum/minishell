@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:15:02 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/24 17:59:58 by mservage         ###   ########.fr       */
+/*   Updated: 2021/09/30 02:13:25 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,4 @@ void	ft_lstadd_back_env(t_env **alst, t_env *new)
 	}
 	return ;
 }
+
