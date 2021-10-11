@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/08 16:26:06 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/11 15:47:29 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	change_pwd(t_mini *mini)
 		&get_env_var("HOME", mini)->value[6]);
 }
 
-int	cd_no_arg(t_mini *mini)
+void	cd_no_arg(t_mini *mini)
 {
 	char	*path;
 
@@ -71,19 +71,41 @@ int	cd_no_arg(t_mini *mini)
 	change_oldpwd(mini);
 	change_pwd(mini);
 	path = &get_env_var("PWD", mini)->value[5];
-	return (chdir(path));
+	mini->exec->return_value = chdir(path);
+	return ;
 }
 
-int	ft_cd_path(t_mini *mini, char **args)
+void	trim_last_path(char *content, int start)
 {
-	if (ft_strncmp(".", args[1], 2) == 0)
+	int	i;
+
+	i = start;
+	while (content[i])
+		i++;
+	i--;
+	while (content[i] != '/' && i > start)
+	{
+		content[i] = 0;
+		i--;
+	}
+}
+
+void	ft_cd_path(t_mini *mini, char **args)
+{
+	if (ft_strncmp(".", args[1], 2) == 0 || ft_strncmp("./", args[1], 3) == 0)
 	{
 		change_oldpwd(mini);
 		mini->exec->return_value = 0;
-		return (mini->exec->return_value);
+		return ;
 	}
-	else if (ft_strncmp("..", args[1], 3) == 0)
-		;
+	else if (ft_strncmp("..", args[1], 3) == 0
+		|| ft_strncmp("../", args[1], 2) == 0)
+	{
+		change_oldpwd(mini);
+		trim_last_path(get_env_var("PWD", mini)->value, 5);
+		mini->exec->return_value = chdir(&get_env_var("PWD", mini)->value[5]);
+		return ;
+	}
 }
 
 void	ft_cd(t_mini *mini, t_arg *prms)
@@ -107,7 +129,5 @@ void	ft_cd(t_mini *mini, t_arg *prms)
 		return ;
 	}
 	else
-	{
 		ft_cd_path(mini, args);
-	}
 }
