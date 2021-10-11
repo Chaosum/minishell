@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/29 20:57:58 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/08 15:31:30 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_mini_struct_env(t_mini *mini, char **env)
 
 	i = 0;
 	mini->env = NULL;
+	mini->secret_env = NULL;
 	while (env[i])
 	{
 		temp = ft_calloc(1, sizeof(t_env));

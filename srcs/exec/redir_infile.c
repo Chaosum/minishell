@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_infile.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/30 02:42:40 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/08 13:48:51 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	redir_check_opening_error(t_mini *mini, t_exec *exec)
 
 void	ft_redir_infile(t_mini *mini, t_exec *exec)
 {
+	close(exec->infile_fd);
 	exec->redir->fd = open(exec->redir->file, O_CREAT | O_RDONLY);
 	if (redir_check_opening_error(mini, exec))
 		exit(666);
@@ -37,6 +38,7 @@ void	ft_redir_infile(t_mini *mini, t_exec *exec)
 
 void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append)
 {
+	close(exec->outfile_fd);
 	if (append == 0)
 	{
 		exec->redir->fd = open(exec->redir->file, O_CREAT | O_WRONLY | O_TRUNC);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/30 04:28:26 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:35:26 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,51 @@ int	ft_lst_size_exec(t_exec	*exec)
 	return (i);
 }
 
+int	check_built_in(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (1);
+	return (0);
+}
+
+void	exec_built_in(t_mini *mini, char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		ft_echo(mini);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		ft_cd(mini);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		ft_pwd(mini);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		ft_env(mini);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		ft_export(mini);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		ft_unset(mini);
+}
+
 int	execute_command(t_mini *mini)
 {
+	t_exec	*temp;
+
+	temp = mini->exec;
+	if (temp->arg && temp->arg->content)
+	{
+		if (check_built_in(temp->arg->content))
+			exec_built_in(mini, temp->arg);
+	}
+	mini->exec->return_value = 0;
+	return (mini->exec->return_value);
 }
 
 void	single_command_case(t_mini *mini)
@@ -43,16 +86,16 @@ void	single_command_case(t_mini *mini)
 			if (ft_strncmp(mini->exec->redir->type, "heredoc",
 					ft_strlen("heredoc")))
 				ft_heredoc(mini, temp);
-			else if (ft_strncmp(mini->exec->redir->type, "<"))
+			else if (ft_strncmp(mini->exec->redir->type, "<", 2))
 				ft_redir_infile(mini, temp);
-			else if (ft_strncmp(mini->exec->redir->type, ">"))
+			else if (ft_strncmp(mini->exec->redir->type, ">", 2))
 				ft_redir_outfile(mini, temp, 0);
-			else if (ft_strncmp(mini->exec->redir->type, ">>"))
+			else if (ft_strncmp(mini->exec->redir->type, ">>", 3))
 				ft_redir_outfile(mini, temp, 1);
 			temp->redir = temp->redir->next;
 		}
 	}
-	execute_command(mini);
+	return (execute_command(mini));
 }
 
 void	ft_execution(t_mini *mini)
