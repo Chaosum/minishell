@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:09:03 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/08 15:30:42 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/12 17:29:19 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_env	*get_env_var(char *get, t_mini *mini)
 	return (temp);
 }
 
-void	ft_add_env_var(char *value, t_mini *mini, int secret)
+void	ft_add_env_var(char *value, t_mini *mini)
 {
 	t_env	*temp;
 
@@ -49,10 +49,7 @@ void	ft_add_env_var(char *value, t_mini *mini, int secret)
 	temp->value = ft_strdup(value);
 	if (temp->value == NULL)
 		exit(666);
-	if (secret == 0)
-		ft_lstadd_back_env(&mini->env, temp);
-	else if (secret == 1)
-		ft_lstadd_back_env(&mini->secret_env, temp);
+	ft_lstadd_back_env(&mini->env, temp);
 }
 
 void	change_env_var_value(t_mini *mini, t_env *var, char *content)

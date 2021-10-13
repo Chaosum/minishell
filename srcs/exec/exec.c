@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/08 14:35:26 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/13 02:16:12 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ int	check_built_in(char *cmd)
 void	exec_built_in(t_mini *mini, char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(mini);
+		ft_echo(mini, mini->exec->arg);
 	if (ft_strncmp(cmd, "cd", 3) == 0)
-		ft_cd(mini);
+		ft_cd(mini, mini->exec->arg);
 	if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(mini);
+		ft_pwd(mini, mini->exec->arg);
 	if (ft_strncmp(cmd, "env", 4) == 0)
-		ft_env(mini);
+		ft_env(mini, mini->exec->arg);
 	if (ft_strncmp(cmd, "export", 7) == 0)
-		ft_export(mini);
+		ft_export(mini, mini->exec->arg);
 	if (ft_strncmp(cmd, "unset", 6) == 0)
-		ft_unset(mini);
+		ft_unset(mini, mini->exec->arg);
 }
 
 int	execute_command(t_mini *mini)
@@ -81,10 +81,10 @@ void	single_command_case(t_mini *mini)
 	temp = mini->exec;
 	if (mini->exec->redir)
 	{
-		while (temp->redir)
+		while (temp && temp->redir)
 		{
-			if (ft_strncmp(mini->exec->redir->type, "heredoc",
-					ft_strlen("heredoc")))
+			if (ft_strncmp(mini->exec->redir->type, "<<",
+					ft_strlen("<<")))
 				ft_heredoc(mini, temp);
 			else if (ft_strncmp(mini->exec->redir->type, "<", 2))
 				ft_redir_infile(mini, temp);
@@ -95,15 +95,15 @@ void	single_command_case(t_mini *mini)
 			temp->redir = temp->redir->next;
 		}
 	}
-	return (execute_command(mini));
+	execute_command(mini);
+	return ;
 }
 
 void	ft_execution(t_mini *mini)
 {
-	t_exec	*start;
 	int		command_number;
 
-	start = mini->exec;
+	mini->start_exec = mini->exec;
 	command_number = ft_lst_size_exec(mini->exec);
 	if (command_number == 0)
 		return (1);

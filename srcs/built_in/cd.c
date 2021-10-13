@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/11 15:47:29 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/13 01:53:43 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,66 +46,71 @@ char	**ft_lstarg_in_tab(t_arg *prms)
 	return (dest);
 }
 
-void	change_oldpwd(t_mini *mini)
+void	change_oldpwd(t_mini *mini, char *old_path)
 {
-	change_env_var_value(mini, get_env_var("OLDPWD", mini),
-		&get_env_var("PWD", mini)->value[5]);
+	t_env	*temp;
+	char	path[PATH_MAX];
+
+	temp = get_env_var("OLDPWD=", mini);
+	if (temp == NULL)
+	{
+		ft_add_env_var("OLDPWD=", mini);
+		temp = get_env_var("OLDPWD=", mini);
+	}
+	if (old_path == NULL)
+		getcwd(path, PATH_MAX);
+	else
+		*path = old_path;
+	change_env_var_value(mini, temp, path);
 }
 
-void	change_pwd(t_mini *mini)
+void	change_pwd(t_mini *mini, char *path)
 {
-	change_env_var_value(mini, get_env_var("PWD", mini),
-		&get_env_var("HOME", mini)->value[6]);
+	t_env	*temp;
+
+	temp = get_env_var("PWD=", mini);
+	mini->exec->redir = chdir(path);
+	change_env_var_value(mini, temp, path);
+	return ;
 }
 
 void	cd_no_arg(t_mini *mini)
 {
 	char	*path;
 
-	if (get_env_var("HOME", mini)->value == NULL)
+	if (get_env_var("HOME=", mini) == NULL
+		|| get_env_var("HOME=", mini)->value == NULL)
 	{
 		write(2, "cd: « HOME » non défini", 27);
 		mini->exec->return_value = 1;
 		return ;
 	}
-	change_oldpwd(mini);
-	change_pwd(mini);
-	path = &get_env_var("PWD", mini)->value[5];
+	path = &get_env_var("HOME=", mini)->value[6];
+	change_oldpwd(mini, NULL);
+	change_pwd(mini, path);
+	path = &get_env_var("PWD=", mini)->value[5];
 	mini->exec->return_value = chdir(path);
 	return ;
 }
 
-void	trim_last_path(char *content, int start)
-{
-	int	i;
-
-	i = start;
-	while (content[i])
-		i++;
-	i--;
-	while (content[i] != '/' && i > start)
-	{
-		content[i] = 0;
-		i--;
-	}
-}
-
 void	ft_cd_path(t_mini *mini, char **args)
 {
-	if (ft_strncmp(".", args[1], 2) == 0 || ft_strncmp("./", args[1], 3) == 0)
+	char	path[PATH_MAX];
+
+	getcwd(path, PATH_MAX);
+	if (chdir(args[1]) == -1)
 	{
-		change_oldpwd(mini);
-		mini->exec->return_value = 0;
+		write(2, "cd: ", 4);
+		write(2, &args[1], ft_strlen(args[1]));
+		write(2, ": No such file or directory\n", 29);
+		mini->exec->return_value = 1;
 		return ;
 	}
-	else if (ft_strncmp("..", args[1], 3) == 0
-		|| ft_strncmp("../", args[1], 2) == 0)
-	{
-		change_oldpwd(mini);
-		trim_last_path(get_env_var("PWD", mini)->value, 5);
-		mini->exec->return_value = chdir(&get_env_var("PWD", mini)->value[5]);
-		return ;
-	}
+	change_oldpwd(mini, path);
+	getcwd(path, PATH_MAX);
+	change_pwd(mini, path);
+	mini->exec->return_value = 0;
+	return ;
 }
 
 void	ft_cd(t_mini *mini, t_arg *prms)
@@ -115,19 +120,18 @@ void	ft_cd(t_mini *mini, t_arg *prms)
 	args = ft_lstarg_in_tab(prms);
 	if (ft_tab_size(args) > 1)
 	{
-		write(2, "cd: trop d'arguments", 21);
+		write(2, "cd: too many arguments\n", 24);
 		mini->exec->return_value = 1;
-		return ;
 	}
-	get_env_var("HOME", mini)->value;
-	if (!args[1])
-		return (cd_no_arg(mini));
-	if (args[1][0] == 0)
+	else if (!args[1])
+		cd_no_arg(mini);
+	else if (args[1][0] == 0)
 	{
-		change_oldpwd(mini);
+		change_oldpwd(mini, NULL);
 		mini->exec->return_value = 0;
-		return ;
 	}
 	else
 		ft_cd_path(mini, args);
+	ft_free_tab(args);
+	return ;
 }

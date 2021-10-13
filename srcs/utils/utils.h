@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:45:47 by matthieu          #+#    #+#             */
-/*   Updated: 2021/09/30 02:13:28 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/12 17:29:28 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 int		ft_tab_size(char **tab);
 t_env	*get_env_var(char *get, t_mini	*mini);
 void	ft_free_tab(char **tab);
+void	ft_add_env_var(char *value, t_mini *mini);
 
 /* ft_atoi.c */
 int		ft_atoi(const char *str);
