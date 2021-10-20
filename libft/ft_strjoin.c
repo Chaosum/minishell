@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 16:06:35 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/10 14:06:22 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/05/10 11:14:26 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
 static int	s_strlen(const char *str)
 {

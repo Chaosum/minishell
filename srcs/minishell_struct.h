@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_struct.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/13 02:13:30 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/18 20:37:14 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_mini
 	struct s_env	*env;
 	struct s_exec	*exec;
 	struct s_exec	*start_exec;
+	int				last_return_value;
 }					t_mini;
 
 #endif

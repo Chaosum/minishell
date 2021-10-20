@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_print_tab.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/27 14:27:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/10 14:06:03 by matthieu         ###   ########.fr       */
+/*   Created: 2021/07/20 17:35:50 by matthieu          #+#    #+#             */
+/*   Updated: 2021/07/20 17:37:55 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	ft_print_tab(char **tab)
 {
-	size_t	i;
-	void	*ptr;
+	int	i;
 
 	i = 0;
-	ptr = malloc(size * count);
-	if (ptr == NULL)
-		return (NULL);
-	while (i < (size * count))
+	while (tab[i])
 	{
-		((unsigned char *)ptr)[i] = 0;
+		printf("%s\n", tab[i]);
 		i++;
 	}
-	return (ptr);
+	return ;
 }

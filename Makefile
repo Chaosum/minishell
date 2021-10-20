@@ -8,9 +8,8 @@ FOLDER_BUILT_IN		= srcs/built_in
 
 SRCS				= ${addprefix ${FOLDER_SRCS}/, minishell.c}
 
-SRCS_UTILS			= ${addprefix ${FOLDER_UTILS}/, global_utils.c ft_atoi.c ft_itoa.c \
-						ft_calloc.c ft_strdup.c ft_strjoin.c ft_strlen.c ft_strncmp.c \
-						ft_lstadd_back.c ft_lstadd_front.c first_memory_utils.c ft_strlcat.c}
+SRCS_UTILS			= ${addprefix ${FOLDER_UTILS}/, global_utils.c \
+						ft_lstadd_back.c ft_lstadd_front.c first_memory_utils.c}
 
 SRCS_EXEC			= ${addprefix ${FOLDER_EXEC}/, exec.c}
 
@@ -29,24 +28,29 @@ CC					= gcc
 
 CFLAGS				= -g3 -fsanitize=address # -Wall -Wextra -Werror
 
-all:		${NAME}
+all:		MAKELIBFT ${NAME}
 
 %.o:		%.c
 			${CC} ${CFLAGS} -o $@ -c $<
 
 ${NAME}:	${OBJS}
-				gcc ${CFLAGS} -o ${NAME} ${OBJS} -lreadline
+				gcc ${CFLAGS} -o ${NAME} ${OBJS} ./libft/libft.a -lreadline
 				@echo compilation complete !
 			
 
 ${OBJS}:	${INCLUDES}
 
+MAKELIBFT:
+			@make -C ./libft
+
 clean:
 			@rm -f *.o ${FOLDER_SRCS}/*.o ${FOLDER_UTILS}/*.o ${FOLDER_EXEC}/*.o ${FOLDER_BUILT_IN}/*.o
 			@echo files cleaned !
+			@make clean -C ./libft
 
 fclean:		clean
 			@rm -f ${NAME}
+			@make fclean -C ./libft
 
 re:			fclean all
 

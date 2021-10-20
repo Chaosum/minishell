@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:45 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/14 04:47:51 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/18 18:44:50 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 int	check_if_valid_var(char *arg, int *error)
 {
-	int			valid;
 	int			i;
 
 	i = 0;
-	valid = 1;
-	while (arg[i] && valid == 1 && arg[0] != '=')
-	{
-		if (ft_isalpha(arg[i]) == 0 && valid == 0)
-		{
-			if (*error == 0)
-				write(2, "export: not valid in this context\n", 35);
-			*error = 1;
-			return (1);
-		}
-		if (arg[i] == '=')
-			valid = 0;
-	}
-	if (arg[0] == '=')
+	if (ft_isalpha(arg[i]))
+		i++;
+	else
 	{
 		*error = 1;
-		write(2, "zsh: bad assignment\n", 21);
+		write(2, "export: invalid identifiant\n", 29);
+		return (1);
 	}
-	return (valid);
+	while (arg[i] && arg[0] != '=')
+	{
+		if (ft_isalnum(arg[i]) == 0)
+		{
+			*error = 1;
+			write(2, "export: invalid identifiant\n", 29);
+			return (1);
+		}
+		i++;
+	}
+	if (arg[i] != '=')
+		return (1);
+	return (0);
 }
 
 int	check_already_exist(t_mini *mini, char *args)

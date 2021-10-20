@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_memory_utils.c                               :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/24 15:40:06 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 17:46:30 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 16:04:47 by mservage          #+#    #+#             */
+/*   Updated: 2021/05/10 11:14:04 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_free_tab(char **tab)
+char	*ft_strdup(const char *s1)
 {
-	int	i;
+	char	*str;
+	int		i;
 
 	i = 0;
-	while (tab[i])
+	if (s1 == NULL)
+		return (NULL);
+	while (s1[i])
+		i++;
+	str = malloc(sizeof(char) * (i + 1));
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		free(tab[i]);
+		str[i] = s1[i];
 		i++;
 	}
-	free(tab[i]);
-	free(tab);
+	str[i] = 0;
+	return (str);
 }

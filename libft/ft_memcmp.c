@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_memory_utils.c                               :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/24 15:40:06 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 17:46:30 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 15:22:12 by mservage          #+#    #+#             */
+/*   Updated: 2021/04/29 14:48:54 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include <string.h>
 
-void	ft_free_tab(char **tab)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (tab[i])
+	while (i < n)
 	{
-		free(tab[i]);
+		if (((unsigned char *)s1)[i] != ((unsigned char *)s2)[i])
+			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 		i++;
 	}
-	free(tab[i]);
-	free(tab);
+	return (0);
 }

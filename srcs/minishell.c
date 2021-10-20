@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/12 18:16:34 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/20 03:28:32 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	init_mini_struct_env(t_mini *mini, char **env)
 void	init_mini_struct(t_mini *mini, char **env)
 {
 	mini->exec = NULL;
+	mini->last_return_value = 0;
 	init_mini_struct_env(mini, env);
 }
 
@@ -50,7 +51,7 @@ void	init_shell_level(t_mini *mini)
 	int		value;
 	char	*content;
 
-	temp = get_env_var("SHLVL", mini);
+	temp = get_env_var("SHLVL=", mini);
 	if (temp == NULL)
 		ft_add_env_var("SHLVL=1", mini);
 	else

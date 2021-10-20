@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:52 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/13 01:50:41 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/19 15:37:43 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	echo_print(char **args, t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		write(mini->exec->outfile_fd, &args[i], ft_strlen(args[i]));
+		i++;
+		if (args[i])
+			write(mini->exec->outfile_fd, " ", 1);
+	}
+	return ;
+}
 
 int	check_echo_arg(char **av)
 {
@@ -37,14 +52,13 @@ void	ft_echo(t_mini *mini, t_arg *prms)
 	if (n_arg)
 	{
 		if (args[2])
-			printf("%s", args[2]);
+			echo_print(&args[2], mini);
 	}
 	else
 	{
 		if (args[1])
-			printf("%s\n", args[1]);
-		else
-			printf("\n");
+			echo_print(&args[1], mini);
+		write(mini->exec->outfile_fd, "\n", 1);
 	}
 	mini->exec->return_value = 0;
 	ft_free_tab(args);

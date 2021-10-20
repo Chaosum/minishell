@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/08 13:48:51 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/18 17:47:04 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append)
 	if (append == 1)
 	{
 		exec->redir->fd = open(exec->redir->file,
-				 O_CREAT | O_WRONLY | O_APPEND);
+				O_CREAT | O_WRONLY | O_APPEND);
 		if (redir_check_opening_error(mini, exec))
 			exit(666);
 		exec->index.outfile++;

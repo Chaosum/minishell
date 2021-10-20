@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:23:46 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 11:40:12 by rjeannot          #+#    #+#             */
+/*   Updated: 2021/04/29 14:47:33 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_pwd(t_mini *mini, t_arg *prms)
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	char	path[PATH_MAX];
+	t_list	*temp;
 
-	getcwd(path, PATH_MAX);
-	write(mini->exec->outfile_fd, path, ft_strlen(path));
-	printf("%s\n", path);
-	mini->exec->return_value = 0;
-	return ;
+	temp = *lst;
+	while (temp)
+	{
+		del(temp->content);
+		*lst = temp->next;
+		free(temp);
+		temp = *lst;
+	}
 }

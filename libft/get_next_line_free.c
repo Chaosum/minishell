@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   get_next_line_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/27 16:09:29 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/24 14:57:43 by mservage         ###   ########.fr       */
+/*   Created: 2021/05/25 15:56:18 by mservage          #+#    #+#             */
+/*   Updated: 2021/05/25 15:56:36 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "get_next_line.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+t_line	*ft_free_struck(t_line *lst, t_line *temp)
 {
-	size_t	i;
-	size_t	j;
-	size_t	k;
+	t_line	*temp2;
 
-	i = 0;
-	j = 0;
-	while (dst[j])
-		j++;
-	while (src[i])
-		i++;
-	k = i + j;
-	if (j >= dstsize)
-		return (i + dstsize);
-	i = 0;
-	while ((i < dstsize - j - 1) && src[i])
+	temp2 = lst;
+	if (temp == lst && lst)
+		lst = lst->next;
+	else if (lst && temp)
 	{
-		dst[j + i] = src[i];
-		i++;
+		while (temp2->next != temp)
+			temp2 = temp2->next;
+		temp2->next = temp->next;
 	}
-	dst[j + i] = 0;
-	i = 0;
-	return (k);
+	free(temp->stock);
+	free(temp);
+	return (lst);
 }

@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/27 16:13:02 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/10 14:06:35 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 14:38:16 by mservage          #+#    #+#             */
+/*   Updated: 2021/04/29 14:46:43 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strlen(const char *s)
+int	ft_isascii(int c)
 {
-	int	i;
-
-	i = 0;
-	if (s)
-		while (s[i])
-			i++;
-	return (i);
+	if ((c >= 0) && (c <= 127))
+		return (1);
+	return (0);
 }

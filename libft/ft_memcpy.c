@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_memory_utils.c                               :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/24 15:40:06 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 17:46:30 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 15:23:09 by mservage          #+#    #+#             */
+/*   Updated: 2021/04/29 14:49:34 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_free_tab(char **tab)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (tab[i])
+	if ((unsigned char *)dst == (unsigned char *)src)
+		return (dst);
+	while (i < n)
 	{
-		free(tab[i]);
+		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
 		i++;
 	}
-	free(tab[i]);
-	free(tab);
+	return (dst);
 }

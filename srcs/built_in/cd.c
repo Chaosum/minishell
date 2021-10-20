@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/13 01:53:43 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/20 02:31:09 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,15 @@ char	**ft_lstarg_in_tab(t_arg *prms)
 	i = t_arg_number_content(prms);
 	dest = ft_calloc(sizeof(char *), i + 1);
 	if (dest == NULL)
-		exit (666);
+		return (NULL);
 	while (temp && temp->content)
 	{
 		dest = ft_strdup(temp->content);
 		if (dest == NULL)
-			exit (666);
+		{
+			ft_free_tab(dest);
+			return (NULL);
+		}
 		temp = temp->next;
 	}
 	return (dest);

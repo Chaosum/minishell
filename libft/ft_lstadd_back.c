@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:23:46 by matthieu         ###   ########.fr       */
+/*   Created: 2020/12/02 13:15:02 by mservage          #+#    #+#             */
+/*   Updated: 2020/12/02 15:19:49 by mservage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_pwd(t_mini *mini, t_arg *prms)
+void	ft_lstadd_back(t_list **alst, t_list *new)
 {
-	char	path[PATH_MAX];
+	t_list	*temp;
 
-	getcwd(path, PATH_MAX);
-	write(mini->exec->outfile_fd, path, ft_strlen(path));
-	printf("%s\n", path);
-	mini->exec->return_value = 0;
+	if (*alst == 0)
+	{
+		*alst = new;
+		return ;
+	}
+	temp = *alst;
+	while (temp)
+	{
+		if (temp->next == 0)
+		{
+			temp->next = new;
+			return ;
+		}
+		temp = temp->next;
+	}
 	return ;
 }

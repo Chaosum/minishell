@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:23:46 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 11:46:52 by rjeannot          #+#    #+#             */
+/*   Updated: 2021/05/10 11:11:45 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_pwd(t_mini *mini, t_arg *prms)
+t_list	*ft_lstnew(void *content)
 {
-	char	path[PATH_MAX];
+	t_list	*elem;
 
-	getcwd(path, PATH_MAX);
-	write(mini->exec->outfile_fd, path, ft_strlen(path));
-	printf("%s\n", path);
-	mini->exec->return_value = 0;
-	return ;
+	elem = malloc(sizeof(t_list));
+	if (elem == NULL)
+		return (NULL);
+	elem->content = content;
+	elem->next = NULL;
+	return (elem);
 }

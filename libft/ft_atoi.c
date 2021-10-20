@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 14:23:46 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/22 16:46:27 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/18 17:54:00 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
 int	ft_atoi(const char *str)
 {
@@ -34,6 +34,6 @@ int	ft_atoi(const char *str)
 	if ((a > 2147483647) && (neg > 0))
 		return (-1);
 	else if ((a > 2147483648) && (neg < 0))
-		return (-1);
+		return (0);
 	return (a * neg);
 }

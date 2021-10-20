@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:23:46 by matthieu         ###   ########.fr       */
+/*   Created: 2020/12/02 13:44:27 by mservage          #+#    #+#             */
+/*   Updated: 2020/12/02 15:20:42 by mservage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_pwd(t_mini *mini, t_arg *prms)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	char	path[PATH_MAX];
-
-	getcwd(path, PATH_MAX);
-	write(mini->exec->outfile_fd, path, ft_strlen(path));
-	printf("%s\n", path);
-	mini->exec->return_value = 0;
-	return ;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

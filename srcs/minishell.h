@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/12 23:48:50 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/20 03:18:09 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include "minishell_struct.h"
+# include "../libft/libft.h"
 # include "./utils/utils.h"
 # include "./exec/exec.h"
 # include "./built_in/built_in.h"

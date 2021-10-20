@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:23:46 by matthieu         ###   ########.fr       */
+/*   Created: 2020/11/27 14:27:54 by mservage          #+#    #+#             */
+/*   Updated: 2021/05/10 11:01:01 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	ft_pwd(t_mini *mini, t_arg *prms)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	path[PATH_MAX];
+	size_t	i;
+	void	*ptr;
 
-	getcwd(path, PATH_MAX);
-	write(mini->exec->outfile_fd, path, ft_strlen(path));
-	printf("%s\n", path);
-	mini->exec->return_value = 0;
-	return ;
+	i = 0;
+	ptr = malloc(size * count);
+	if (ptr == NULL)
+		return (NULL);
+	while (i < (size * count))
+	{
+		((unsigned char *)ptr)[i] = 0;
+		i++;
+	}
+	return (ptr);
 }
