@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:23:56 by mservage          #+#    #+#             */
-/*   Updated: 2021/09/30 02:38:29 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/21 02:53:53 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_heredoc(t_mini *mini, t_exec *temp)
+void	ft_heredoc(t_mini *mini, t_exec *temp2)
 {
 	char	*input;
 	char	*line;
@@ -24,7 +24,7 @@ void	ft_heredoc(t_mini *mini, t_exec *temp)
 		line = readline("> ");
 		if (line == NULL)
 			exit(666);
-		if (ft_strncmp(line, temp->redir->file, ft_strlen(temp->redir->file)))
+		if (ft_strncmp(line, temp2->redir->file, ft_strlen(temp2->redir->file)))
 			break ;
 		temp = ft_strjoin(input, line);
 		if (temp == NULL)
@@ -36,6 +36,6 @@ void	ft_heredoc(t_mini *mini, t_exec *temp)
 			exit (666);
 	}
 	free(line);
-	temp->heredoc = 1;
-	temp->heredoc = input;
+	temp2->index.heredoc = 1;
+	temp2->heredoc = input;
 }

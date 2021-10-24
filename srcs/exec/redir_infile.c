@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 17:47:04 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/21 02:55:17 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_redir_infile(t_mini *mini, t_exec *exec)
 	if (redir_check_opening_error(mini, exec))
 		exit(666);
 	exec->index.infile = 1;
-	exec->heredoc = 0;
+	exec->index.heredoc = 0;
 	exec->infile_fd = exec->redir->fd;
 }
 
