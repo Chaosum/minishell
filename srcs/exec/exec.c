@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/20 03:22:45 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/27 03:59:50 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	exec_built_in(t_mini *mini, char *cmd)
 		ft_unset(mini, mini->exec->arg);
 }
 
-//
-
 char	*define_command_path(char *path, char *command)
 {
 	char	*dest;
@@ -114,15 +112,18 @@ int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
 	if (ft_strncmp(args[0], "/", 1) == 0
 		|| ft_strncmp(args[0], "./", 2) == 0)
 		execve(args[0], args, NULL);
-	path = define_env_path(mini);
-	if (path)
+	else
 	{
-		while (path[i])
+		path = define_env_path(mini);
+		if (path)
 		{
-			command_path = define_command_path(path[i], args[0]);
-			execve(command_path, args, NULL);
-			i++;
-			free(command_path);
+			while (path[i])
+			{
+				command_path = define_command_path(path[i], args[0]);
+				execve(command_path, args, NULL);
+				i++;
+				free(command_path);
+			}
 		}
 	}
 	temp->return_value = 1;
@@ -130,65 +131,6 @@ int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
 	ft_free_tab(args);
 	write(2, "Wrong command path\n", 20);
 	return (1);
-}
-
-void	exec_single_case_function(t_mini *mini, t_exec *temp)
-{
-	int		fd[2];
-	pid_t	pid;
-	char	**args;
-
-	if (pipe(fd) < 0)
-	{
-		mini->exec->return_value = 1;
-		return ;
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		mini->exec->return_value = 1;
-		return ;
-	}
-	if (pid == 0)
-	{
-		args = ft_lstarg_in_tab(temp->arg);
-		if (args == NULL)
-		{
-			close(fd[0]);
-			close(fd[1]);
-			mini->exec->return_value = 1;
-			return ;
-		}
-		dup2(temp->infile_fd, 0);
-		dup2(temp->outfile_fd, 1);
-		close(temp->infile_fd);
-		close(temp->outfile_fd);
-		close(fd[0]);
-		close(fd[1]);
-		fork_execve_define_path(mini, temp, args);
-	}
-	close(temp->infile_fd);
-	close(temp->outfile_fd);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid, &temp->return_value, 0);
-}
-
-int	execute_command(t_mini *mini)
-{
-	t_exec	*temp;
-
-	temp = mini->exec;
-	if (temp->arg && temp->arg->content)
-	{
-		if (check_built_in(temp->arg->content))
-			exec_built_in(mini, temp->arg);
-		else
-			exec_single_case_function(mini, temp);
-	}
-	return (mini->exec->return_value);
 }
 
 void	setup_redir(t_mini *mini, t_exec *temp)
@@ -208,16 +150,41 @@ void	setup_redir(t_mini *mini, t_exec *temp)
 	}
 }
 
-void	single_command_case(t_mini *mini)
+void	free_lst_exec(t_mini *mini)
 {
 	t_exec	*temp;
+	t_arg	*temp2;
+	t_redir	*temp3;
 
-	temp = mini->exec;
-	if (mini->exec->redir)
-		setup_redir(mini, temp);
-	execute_command(mini);
-	mini->last_return_value = mini->exec->return_value;
-	return ;
+	while (mini->exec)
+	{
+		temp = mini->exec->next;
+		temp2 = mini->exec->arg;
+		temp3 = mini->exec->redir;
+		while (temp2)
+		{
+			free(temp2->content);
+			temp2 = temp2->next;
+			free(mini->exec->arg);
+			mini->exec->arg = temp2;
+		}
+		while (temp3)
+		{
+			free(temp3->file);
+			free(temp3->type);
+			temp3 = temp3->next;
+			free(mini->exec->redir);
+			mini->exec->redir = temp3;
+		}
+		if (mini->exec->heredoc)
+			free(mini->exec->heredoc);
+		if (mini->exec->infile_fd != 0 && mini->exec->infile_fd != 1)
+			close(mini->exec->infile_fd);
+		if (mini->exec->outfile_fd != 1 && mini->exec->outfile_fd != 0)
+			close(mini->exec->outfile_fd);
+		free(mini->exec);
+		mini->exec = temp;
+	}
 }
 
 void	ft_execution(t_mini *mini)
@@ -232,5 +199,6 @@ void	ft_execution(t_mini *mini)
 		single_command_case(mini);
 	else if (command_number > 1)
 		multiple_command_case(mini, command_number);
+	free_lst_exec(mini);
 	return ;
 }
