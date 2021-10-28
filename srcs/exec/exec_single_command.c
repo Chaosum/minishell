@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_command.c                                   :+:      :+:    :+:   */
+/*   exec_single_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/25 16:30:45 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/28 02:15:40 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	execute_single_command(t_mini *mini)
 	if (temp->arg && temp->arg->content)
 	{
 		if (check_built_in(temp->arg->content))
-			exec_built_in(mini, temp->arg);
+			exec_built_in(mini, temp->arg->content);
 		else
 			exec_single_case_function(mini, temp);
 	}

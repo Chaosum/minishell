@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:45 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 18:44:50 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/28 01:58:16 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_if_valid_var(char *arg, int *error)
 
 int	check_already_exist(t_mini *mini, char *args)
 {
-	char	*var[PATH_MAX];
+	char	var[PATH_MAX];
 	int		i;
 	t_env	*temp;
 

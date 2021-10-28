@@ -6,38 +6,25 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:48 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/13 02:16:48 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/27 23:59:12 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_exit_free_all(t_mini *mini)
+void	ft_exit_free_all(t_mini *mini, int exit_value)
 {
-	while (mini->start_exec)
-	{
-		if (mini->exec)
-		{
-			if (mini->exec->redir)
-				free_redir_lst(mini->exec->redir);
-			if (mini->exec->arg)
-				free_arg_lst(mini->exec->arg);
-			if (mini->exec->heredoc)
-				free(mini->exec->heredoc);
-			close(mini->exec->infile_fd);
-			close(mini->exec->outfile_fd);
-			free(mini->exec);
-		}
-		mini->start_exec = mini->start_exec->next;
-	}
-	ft_free_env(mini->env);
-	exit(0);
+	free_lst_exec(mini);
+	ft_free_env(mini);
+	exit(exit_value);
 }
 
 void	ft_exit(t_mini *mini, t_arg *prms)
 {
-	char	**args;
+	char			**args;
+	long int		exit_value;
 
+	exit_value = 1;
 	args = ft_lstarg_in_tab(prms);
 	if (ft_tab_size(args) > 1)
 	{
@@ -48,6 +35,14 @@ void	ft_exit(t_mini *mini, t_arg *prms)
 		return ;
 	}
 	write(2, "exit\n", 6);
+	if (args[1])
+		exit_value = ft_atoi(args[1]);
+	if (exit_value < 0)
+	{
+		exit_value = 255;
+		write(2, "exit: numeric argument required\n", 33);
+	}
+	exit_value = exit_value % 256;
 	ft_free_tab(args);
-	ft_exit_free_all(mini);
+	ft_exit_free_all(mini, exit_value);
 }

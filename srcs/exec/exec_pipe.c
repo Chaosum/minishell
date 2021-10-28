@@ -6,37 +6,40 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/27 03:00:39 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/28 02:12:57 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_free_pipe_tab(int **pipe_fd, int command_number)
+void	ft_free_pipe_tab(int pipe_fd[1024][2], int command_number)
 {
 	int	i;
 
 	i = 0;
 	while (i < command_number)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		close(pipe_fd[i][0]);
+		close(pipe_fd[i][1]);
 		pipe_fd = 0;
 		i++;
 	}
 	i = 0;
 }
 
-int	init_pipe_tab(int **pipe_fd, int command_number, pid_t *pid)
+int	init_pipe_tab(int pipe_fd[1024][2], int command_number, pid_t *pid)
 {
 	int	i;
 
 	i = 0;
-	while (i < FOPEN_MAX)
-		pipe_fd[i++] = 0;
+	while (i < 1024)
+	{
+		pipe_fd[i][0] = -1;
+		pipe_fd[i][1] = -1;
+	}
 	while (i < command_number)
 		pid[i++] = 0;
-	return ;
+	return (0);
 }
 
 int	execute_pipe_command(t_mini *mini, t_exec *temp)
@@ -45,24 +48,26 @@ int	execute_pipe_command(t_mini *mini, t_exec *temp)
 
 	args = ft_lstarg_in_tab(temp->arg);
 	fork_execve_define_path(mini, temp, args);
+	return (1);
 }
 
 void	ft_wait_fork(t_mini *mini, t_exec *temp, pid_t *pid, int cmd_nbr)
 {
 	int	i;
+	int	wstatus;
 
 	i = 0;
 	while (i < cmd_nbr)
 	{
-		wait(pid[i]);
+		waitpid(pid[i], &wstatus, 0);
 		i++;
 	}
 }
 
 void	multiple_command_case(t_mini *mini, int command_number)
 {
-	int		pipe_fd[FOPEN_MAX][2];
-	pid_t	pid[FOPEN_MAX];
+	int		pipe_fd[1024][2];
+	pid_t	pid[1024];
 	int		i;
 	t_exec	*temp;
 

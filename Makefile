@@ -11,9 +11,11 @@ SRCS				= ${addprefix ${FOLDER_SRCS}/, minishell.c}
 SRCS_UTILS			= ${addprefix ${FOLDER_UTILS}/, global_utils.c \
 						ft_lstadd_back.c ft_lstadd_front.c first_memory_utils.c}
 
-SRCS_EXEC			= ${addprefix ${FOLDER_EXEC}/, exec.c}
+SRCS_EXEC			= ${addprefix ${FOLDER_EXEC}/, exec.c exec_pipe.c heredoc.c \
+						exec_single_command.c redir_infile.c}
 
-SRCS_BUILT_IN		= ${addprefix ${FOLDER_BUILT_IN}/, cd.c echo.c env.c exit.c export.c pwd.c unset.c}
+SRCS_BUILT_IN		= ${addprefix ${FOLDER_BUILT_IN}/, cd.c echo.c env.c exit.c \
+						export.c pwd.c unset.c}
 
 OBJS				= ${SRCS:.c=.o} ${SRCS_UTILS:.c=.o} ${SRCS_BUILT_IN:.c=.o} ${SRCS_EXEC:.c=.o} 
 

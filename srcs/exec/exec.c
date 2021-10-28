@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/27 03:59:50 by mservage         ###   ########.fr       */
+/*   Updated: 2021/10/28 03:56:37 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ void	exec_built_in(t_mini *mini, char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 5) == 0)
 		ft_echo(mini, mini->exec->arg);
-	if (ft_strncmp(cmd, "cd", 3) == 0)
+	else if (ft_strncmp(cmd, "cd", 3) == 0)
 		ft_cd(mini, mini->exec->arg);
-	if (ft_strncmp(cmd, "pwd", 4) == 0)
+	else if (ft_strncmp(cmd, "pwd", 4) == 0)
 		ft_pwd(mini, mini->exec->arg);
-	if (ft_strncmp(cmd, "env", 4) == 0)
+	else if (ft_strncmp(cmd, "env", 4) == 0)
 		ft_env(mini, mini->exec->arg);
-	if (ft_strncmp(cmd, "export", 7) == 0)
+	else if (ft_strncmp(cmd, "export", 7) == 0)
 		ft_export(mini, mini->exec->arg);
-	if (ft_strncmp(cmd, "unset", 6) == 0)
+	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(mini, mini->exec->arg);
 }
 
@@ -150,6 +150,19 @@ void	setup_redir(t_mini *mini, t_exec *temp)
 	}
 }
 
+void	ft_free_env(t_mini *mini)
+{
+	t_env *temp;
+
+	while (mini->env)
+	{
+		free(mini->env->value);
+		temp = mini->env->next;
+		free(mini->env);
+		mini->env = temp;
+	}
+}
+
 void	free_lst_exec(t_mini *mini)
 {
 	t_exec	*temp;
@@ -189,9 +202,8 @@ void	free_lst_exec(t_mini *mini)
 
 void	ft_execution(t_mini *mini)
 {
-	int		command_number;
+	int	command_number;
 
-	mini->start_exec = mini->exec;
 	command_number = ft_lst_size_exec(mini->exec);
 	if (command_number == 0)
 		return ;

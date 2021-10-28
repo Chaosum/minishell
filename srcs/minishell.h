@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/20 03:18:09 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/10/28 04:33:44 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@
 
 /* minishell.c */
 
-void	init_mini_struct_malloced(t_mini *mini);
-void	init_mini_struct_env(t_mini *mini, char **env);
+int		init_mini_struct_env(t_mini *mini, char **env);
 void	init_mini_struct(t_mini *mini, char **env);
-void	ft_add_env_var(char *value, t_mini *mini);
+void	main_mini_temp(t_mini *mini);
 int		parsing(t_mini *mini, char *line);
-void	init_shell_level(t_mini *mini);
-void	change_env_var_value(t_mini *mini, t_env *var, char *content);
+int		init_shell_level(t_mini *mini);
 int		main(int ac, char **av, char **env);
 
 #endif
