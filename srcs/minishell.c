@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/28 04:32:53 by mservage         ###   ########.fr       */
+/*   Updated: 2021/11/17 13:42:58 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	init_shell_level(t_mini *mini)
 		if (content == NULL)
 			return (1);
 		change_env_var_value(mini, temp, content);
+		free(content);
 	}
 	return (0);
 }
@@ -115,5 +116,6 @@ int	main(int ac, char **av, char **env)
 	// 	add_history(line);
 	parsing(&mini, line);
 	// }
+	ft_free_env(&mini);
 	return (1);
 }

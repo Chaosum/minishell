@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/28 02:13:39 by mservage         ###   ########.fr       */
+/*   Updated: 2021/11/17 11:11:20 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 /* exec_pipe.c */
 
-void	ft_free_pipe_tab(int pipe_fd[1024][2], int command_number);
-int		init_pipe_tab(int pipe_fd[1024][2], int command_number, pid_t *pid);
+void	ft_free_pipe_tab(int *pipe_fd, int command_number);
+int		init_pipe_tab(int *pipe_fd, int command_number, pid_t *pid);
 int		execute_pipe_command(t_mini *mini, t_exec *temp);
 void	multiple_command_case(t_mini *mini, int command_number);
 

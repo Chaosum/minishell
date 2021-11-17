@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/28 02:12:57 by mservage         ###   ########.fr       */
+/*   Updated: 2021/11/17 13:26:08 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_free_pipe_tab(int pipe_fd[1024][2], int command_number)
+void	ft_free_pipe_tab(int *pipe_fd, int command_number)
 {
 	int	i;
 
 	i = 0;
 	while (i < command_number)
 	{
-		close(pipe_fd[i][0]);
-		close(pipe_fd[i][1]);
+		close(pipe_fd[i * 2]);
+		close(pipe_fd[i * 2 + 1]);
 		pipe_fd = 0;
 		i++;
 	}
 	i = 0;
 }
 
-int	init_pipe_tab(int pipe_fd[1024][2], int command_number, pid_t *pid)
+int	init_pipe_tab(int *pipe_fd, int command_number, pid_t *pid)
 {
 	int	i;
 
 	i = 0;
-	while (i < 1024)
+	while (i < 2048)
 	{
-		pipe_fd[i][0] = -1;
-		pipe_fd[i][1] = -1;
+		pipe_fd[i] = -1;
+		pipe_fd[i] = -1;
 	}
 	while (i < command_number)
 		pid[i++] = 0;
@@ -66,7 +66,7 @@ void	ft_wait_fork(t_mini *mini, t_exec *temp, pid_t *pid, int cmd_nbr)
 
 void	multiple_command_case(t_mini *mini, int command_number)
 {
-	int		pipe_fd[1024][2];
+	int		pipe_fd[2048];
 	pid_t	pid[1024];
 	int		i;
 	t_exec	*temp;
@@ -76,7 +76,7 @@ void	multiple_command_case(t_mini *mini, int command_number)
 	init_pipe_tab(pipe_fd, command_number, pid);
 	while (i < command_number)
 	{
-		if (pipe(pipe_fd[i]) > 0)
+		if (pipe(&pipe_fd[i * 2]) < 0)
 		{
 			write(2, "Pipe, memory issue\n", 14);
 			ft_free_pipe_tab(pipe_fd, i);
@@ -99,11 +99,11 @@ void	multiple_command_case(t_mini *mini, int command_number)
 			if (i == 0)
 				dup2(mini->exec->infile_fd, 0);
 			else
-				dup2(pipe_fd[i - 1][0], 0);
+				dup2(pipe_fd[(i - 1) * 2], 0);
 			if (i == command_number - 1)
 				dup2(mini->exec->outfile_fd, 1);
 			else
-				dup2(pipe_fd[i][1], 1);
+				dup2(pipe_fd[i * 2 + 1], 1);
 			ft_free_pipe_tab(pipe_fd, command_number);
 			execute_pipe_command(mini, temp);
 		}
