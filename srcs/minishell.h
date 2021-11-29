@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/28 04:33:44 by mservage         ###   ########.fr       */
+/*   Updated: 2021/11/26 10:40:02 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "./utils/utils.h"
 # include "./exec/exec.h"
 # include "./built_in/built_in.h"
+# include "./parsing.h"
 
 /* minishell.c */
 

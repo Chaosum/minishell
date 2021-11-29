@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/17 13:42:58 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/11/26 10:38:33 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,6 @@ void	main_mini_temp(t_mini *mini)
 	mini->exec->arg->next->content = ft_strdup("non");
 	mini->exec->arg->next->next = ft_calloc(1, sizeof(t_arg));
 	mini->exec->arg->next->next->content = ft_strdup("ouioui");
-}
-
-int	parsing(t_mini *mini, char *line)
-{
-	main_mini_temp(mini);
-	ft_execution(mini);
-	return (0);
 }
 
 int	init_shell_level(t_mini *mini)
