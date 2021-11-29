@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/26 10:20:42 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:13:54 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_token
 	char			*arg;
 	int				single_quote;
 	int				double_quote;
-	e_etat			etat;
+	int				etat;
 	struct s_token	*next;
 }			t_token;
 
