@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/11/29 19:00:33 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:25:46 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	replace_braces(t_token *temp, t_mini *mini)
 	int		i;
 	int		j;
 	char	dest[2048];
-	char	replace_temp;
+	char	*replace_temp;
 
 	i = 0;
 	while (i < 2048)
@@ -76,6 +76,20 @@ int	replace_braces(t_token *temp, t_mini *mini)
 	return (0);
 }
 
+void	print_token(t_mini *mini)
+{
+	t_token	*temp;
+	int		i;
+
+	i = 0;
+	temp = mini->token;
+	while (temp)
+	{
+		printf("%d : %s\n", i++, temp->arg);
+		temp = temp->next;
+	}
+}
+
 int	purge_token(t_mini *mini)
 {
 	t_token	*temp;
@@ -95,6 +109,7 @@ void	lexer(t_mini *mini)
 	t_token	*temp;
 
 	temp = mini->token;
+	print_token(mini);
 	purge_token(mini);
-	
+	print_token(mini);
 }

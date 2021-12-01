@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/26 10:38:33 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:29:49 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ int	main(int ac, char **av, char **env)
 	}
 	line = NULL;
 	prompt = "$minishell> ";
-	// while (1)
-	// {
-	// 	line = readline(prompt);
-	// 	add_history(line);
-	parsing(&mini, line);
-	// }
+	while (1)
+	{
+		line = readline(prompt);
+		add_history(line);
+		parsing(&mini, line);
+	}
 	ft_free_env(&mini);
 	return (1);
 }

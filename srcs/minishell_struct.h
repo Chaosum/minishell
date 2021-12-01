@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/29 15:13:54 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:27:53 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ enum	e_etat
 	redirection_in = 0,
 	redirection_out,
 	heredoc,
-	pipe,
+	is_pipe,
 	litteral,
-}	e_etat;
+};
 
 typedef struct s_redir
 {
