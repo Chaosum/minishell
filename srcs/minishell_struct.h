@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/30 16:27:53 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/04 00:07:17 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ enum	e_etat
 {
 	redirection_in = 0,
 	redirection_out,
+	redirection_out_append,
 	heredoc,
 	is_pipe,
 	litteral,

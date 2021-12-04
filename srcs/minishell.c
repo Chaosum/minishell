@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/30 16:29:49 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/01 13:29:29 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	init_mini_struct(t_mini *mini, char **env)
 {
 	mini->exec = NULL;
 	mini->last_return_value = 0;
+	mini->token = NULL;
 	if (init_mini_struct_env(mini, env) == -1)
 		exit (1);
 }

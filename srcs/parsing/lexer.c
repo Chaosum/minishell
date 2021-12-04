@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/11/30 16:25:46 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/04 02:29:56 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,20 @@ int	replace_braces(t_token *temp, t_mini *mini)
 			temp->single_quote = !temp->single_quote;
 			i++;
 		}
-		if (temp->single_quote == 0 && temp->arg[i] == '$')
+		else if (temp->single_quote == 0 && temp->arg[i] == '$')
 		{
 			replace_temp = replace_by_env(mini, temp, &i, &j);
 			ft_strlcat(dest, replace_temp, ft_strlen(replace_temp));
 		}
 		else
 			dest[j++] = temp->arg[i++];
+	}
+	free(temp->arg);
+	temp->arg = ft_strdup(dest);
+	if (temp->arg == NULL)
+	{
+		printf("malloc error\n");
+		return (1);
 	}
 	return (0);
 }
@@ -104,12 +111,125 @@ int	purge_token(t_mini *mini)
 	}
 }
 
+int	check_token_redir(t_mini *mini, t_token *temp)
+{
+	if (temp->next)
+	{
+		if (temp->etat == redirection_in || temp->etat == heredoc)
+		{
+			if (temp->next->etat != -1)
+			{
+				printf("parse error near <\n");
+				return (1);
+			}
+			else
+				temp->next->etat = litteral;
+		}
+		else if (temp->etat == redirection_out
+			|| temp->etat == redirection_out_append)
+		{
+			if (temp->next->etat != -1)
+			{
+				printf("parse error near >\n");
+				return (1);
+			}
+			else
+				temp->next->etat = litteral;
+		}
+	}
+	return (0);
+}
+int	parse_token(t_mini *mini)
+{
+	t_token	*temp;
+	int		i;
+
+	i = 0;
+	temp = mini->token;
+	while (temp)
+	{
+		if (temp->etat == 0 || temp->etat == 1 || temp->etat == 2)
+		{
+			check_token_redir(mini, temp);
+		}
+		else
+			temp->etat = litteral;
+		i++;
+		temp = temp->next;
+	}
+	return (0);
+}
+
+int	create_redir(t_mini *mini, t_token *temp)
+{
+}
+
+int	create_exec(t_mini *mini)
+{
+	t_exec	*temp;
+
+	temp = ft_calloc(1, sizeof(t_exec));
+	if (temp == NULL)
+	{
+		printf("Malloc error\n");
+		return (1);
+	}
+	ft_lstadd_back_exec(&mini->exec, temp);
+	temp = temp->next;
+	return (0);
+}
+
+int	create_arg(t_mini *mini, t_token *temp)
+{
+	t_arg	*arg;
+
+	arg = ft_calloc(1, sizeof(t_arg));
+	if (arg == NULL)
+	{
+		printf("Malloc error\n");
+		return (1);
+	}
+	arg->content = ft_strdup(temp->arg);
+	if (arg->content == NULL)
+	{
+		printf("Malloc error\n");
+		return (1);
+	}
+	ft_lstadd_back_arg(&mini->exec->arg, arg);
+	temp = temp->next;
+	return (0);
+}
+
+int	lexer_exec(t_mini *mini)
+{
+	t_token	*temp;
+
+	temp = mini->token;
+	if (temp)
+		create_exec(mini);
+	if (mini->exec == NULL)
+	{
+		printf("Malloc error\n");
+		return (1);
+	}
+	while (temp)
+	{
+		if (temp->etat < 4)
+			create_redir(mini, temp);
+		if (temp->etat == is_pipe)
+			create_exec(mini);
+		if (temp->etat == litteral)
+			create_arg(mini, temp);
+	}
+}
+
 void	lexer(t_mini *mini)
 {
 	t_token	*temp;
 
 	temp = mini->token;
-	print_token(mini);
 	purge_token(mini);
 	print_token(mini);
+	parse_token(mini);
+	lexer_exec(mini);
 }

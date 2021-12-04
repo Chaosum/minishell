@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/01 04:28:30 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/04 00:08:48 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,76 @@ void	free_token(t_mini *mini)
 {
 }
 
-void	create_redir_token(mini, line, prev, i)
+int	create_redir_token(t_mini *mini, char *line, int *i)
 {
+	t_token		*token;
+
+	token = ft_calloc(1, sizeof(t_token));
+	if (token == NULL)
+		free_token(mini); /* a free correctement */
+	if (line[*i] == '|')
+	{
+		token->arg = ft_strdup("|");
+		if (token->arg == NULL)
+			free_token(mini);
+		token->etat = is_pipe;
+		*i = *i + 1;
+	}
+	else if (line[*i] == '>')
+	{
+		if (line[*i + 1] == '>')
+		{
+			if (line[*i + 2] == '>')
+			{
+				printf("Syntax error near >\n");
+				return (1);
+			}
+			token->arg = ft_strdup(">>");
+			token->etat = redirection_out_append;
+			*i = *i + 2;
+		}
+		else if (line[*i + 1] == '<' || line[*i + 1] == '|')
+		{
+			printf("Syntax error near >\n");
+			return (1);
+		}
+		else
+		{
+			token->arg = ft_strdup(">");
+			token->etat = redirection_out;
+			*i = *i + 1;
+		}
+	}
+	else if (line[*i] == '<')
+	{
+		if (line[*i + 1] == '<')
+		{
+			if (line[*i + 2] == '>')
+			{
+				printf("Syntax error near >\n");
+				return (1);
+			}
+			token->arg = ft_strdup("<<");
+			token->etat = heredoc;
+			*i = *i + 2;
+		}
+		else if (line[*i + 1] == '>' || line[*i + 1] == '|')
+		{
+			printf("Syntax error near <\n");
+			return (1);
+		}
+		else
+		{
+			token->arg = ft_strdup("<");
+			token->etat = redirection_out;
+			*i = *i + 1;
+		}
+	}
+	ft_token_add_back(&mini->token, token);
+	return (0);
 }
 
-void	create_token(t_mini *mini, char *line, int start, int max)
+int	create_token(t_mini *mini, char *line, int start, int max)
 {
 	int			i;
 	t_token		*token;
@@ -28,10 +93,17 @@ void	create_token(t_mini *mini, char *line, int start, int max)
 	i = 0;
 	token = ft_calloc(1, sizeof(t_token));
 	if (token == NULL)
+	{
 		free_token(mini); /* a free correctement */
+		return (1);
+	}
+	token->etat = -1;
 	token->arg = ft_calloc(max - start + 1, sizeof(char));
 	if (token->arg == NULL)
+	{
 		free_token(mini); /* a free correctement */
+		return (1);
+	}
 	while (start < max)
 	{
 		token->arg[i] = line[start];
@@ -39,6 +111,7 @@ void	create_token(t_mini *mini, char *line, int start, int max)
 		start++;
 	}
 	ft_token_add_back(&mini->token, token);
+	return (0);
 }
 
 int	start_token(char *line, t_mini *mini)
@@ -66,15 +139,20 @@ int	start_token(char *line, t_mini *mini)
 				&& double_quote == 0
 				&& single_quote == 0)
 			{
-				create_redir_token(mini, line, prev, i);
-				i++;
+				if (create_redir_token(mini, line, &i))
+					return (1);
 				break ;
 			}
 			else if ((line[i + 1] == 0 || ft_isspace(line[i])) && i != prev
 				|| (line[i + 1] == '|' && double_quote == 0
+					&& single_quote == 0)
+				|| (line[i + 1] == '>' && double_quote == 0
+					&& single_quote == 0)
+				|| (line[i + 1] == '<' && double_quote == 0
 					&& single_quote == 0))
 			{
-				create_token(mini, line, prev, i);
+				if (create_token(mini, line, prev, i + 1))
+					return (1);
 				i++;
 				break ;
 			}
