@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/04 00:08:48 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/05 03:53:06 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int	start_token(char *line, t_mini *mini)
 					return (1);
 				break ;
 			}
-			else if ((line[i + 1] == 0 || ft_isspace(line[i])) && i != prev
+			else if ((line[i + 1] == 0 || ft_isspace(line[i + 1])) && i != prev
 				|| (line[i + 1] == '|' && double_quote == 0
 					&& single_quote == 0)
 				|| (line[i + 1] == '>' && double_quote == 0
@@ -158,6 +158,8 @@ int	start_token(char *line, t_mini *mini)
 			}
 			i++;
 		}
+		while (ft_isspace(line[i]))
+			i++;
 		prev = i;
 	}
 	if (double_quote || single_quote)

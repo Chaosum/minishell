@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/17 13:26:08 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/05 04:11:23 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ void	ft_free_pipe_tab(int *pipe_fd, int command_number)
 	int	i;
 
 	i = 0;
-	while (i < command_number)
+	if (pipe_fd)
 	{
-		close(pipe_fd[i * 2]);
-		close(pipe_fd[i * 2 + 1]);
-		pipe_fd = 0;
-		i++;
+		while (i < command_number)
+		{
+			close(pipe_fd[i * 2]);
+			close(pipe_fd[i * 2 + 1]);
+			i++;
+		}
 	}
-	i = 0;
 }
 
 int	init_pipe_tab(int *pipe_fd, int command_number, pid_t *pid)
@@ -36,7 +37,9 @@ int	init_pipe_tab(int *pipe_fd, int command_number, pid_t *pid)
 	{
 		pipe_fd[i] = -1;
 		pipe_fd[i] = -1;
+		i++;
 	}
+	i = 0;
 	while (i < command_number)
 		pid[i++] = 0;
 	return (0);

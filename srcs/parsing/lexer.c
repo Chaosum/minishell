@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/04 02:29:56 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/05 04:13:53 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,7 @@ int	check_token_redir(t_mini *mini, t_token *temp)
 int	parse_token(t_mini *mini)
 {
 	t_token	*temp;
-	int		i;
 
-	i = 0;
 	temp = mini->token;
 	while (temp)
 	{
@@ -152,16 +150,46 @@ int	parse_token(t_mini *mini)
 		{
 			check_token_redir(mini, temp);
 		}
-		else
+		else if (temp->etat != is_pipe)
 			temp->etat = litteral;
-		i++;
 		temp = temp->next;
 	}
 	return (0);
 }
 
-int	create_redir(t_mini *mini, t_token *temp)
+int	create_redir(t_mini *mini, t_exec *exec, t_token *temp)
 {
+	t_redir	*redir;
+
+	redir = ft_calloc(1, sizeof(t_redir));
+	if (temp->etat == 0)
+	{
+		redir->type = ft_strdup("<");
+		if (temp->next)
+			redir->file = ft_strdup(temp->next->arg);
+		ft_lstadd_back_redir(&exec->redir, redir);
+	}
+	if (temp->etat == 1)
+	{
+		redir->type = ft_strdup(">");
+		if (temp->next)
+			redir->file = ft_strdup(temp->next->arg);
+		ft_lstadd_back_redir(&exec->redir, redir);
+	}
+	if (temp->etat == 2)
+	{
+		redir->type = ft_strdup(">>");
+		if (temp->next)
+			redir->file = ft_strdup(temp->next->arg);
+		ft_lstadd_back_redir(&exec->redir, redir);
+	}
+	if (temp->etat == 3)
+	{
+		redir->type = ft_strdup("<<");
+		if (temp->next)
+			redir->file = ft_strdup(temp->next->arg);
+		ft_lstadd_back_redir(&exec->redir, redir);
+	}
 }
 
 int	create_exec(t_mini *mini)
@@ -175,11 +203,10 @@ int	create_exec(t_mini *mini)
 		return (1);
 	}
 	ft_lstadd_back_exec(&mini->exec, temp);
-	temp = temp->next;
 	return (0);
 }
 
-int	create_arg(t_mini *mini, t_token *temp)
+int	create_arg(t_mini *mini, t_exec *exec, t_token *temp)
 {
 	t_arg	*arg;
 
@@ -195,18 +222,21 @@ int	create_arg(t_mini *mini, t_token *temp)
 		printf("Malloc error\n");
 		return (1);
 	}
-	ft_lstadd_back_arg(&mini->exec->arg, arg);
-	temp = temp->next;
+	ft_lstadd_back_arg(&exec->arg, arg);
 	return (0);
 }
 
 int	lexer_exec(t_mini *mini)
 {
 	t_token	*temp;
+	t_exec	*temp_exec;
 
 	temp = mini->token;
 	if (temp)
+	{
 		create_exec(mini);
+		temp_exec = mini->exec;
+	}
 	if (mini->exec == NULL)
 	{
 		printf("Malloc error\n");
@@ -215,11 +245,23 @@ int	lexer_exec(t_mini *mini)
 	while (temp)
 	{
 		if (temp->etat < 4)
-			create_redir(mini, temp);
-		if (temp->etat == is_pipe)
+		{
+			create_redir(mini, temp_exec, temp);
+			temp = temp->next;
+			if (temp)
+				temp = temp->next;
+		}
+		else if (temp->etat == is_pipe)
+		{
 			create_exec(mini);
-		if (temp->etat == litteral)
-			create_arg(mini, temp);
+			temp_exec = temp_exec->next;
+			temp = temp->next;
+		}
+		else
+		{
+			create_arg(mini, temp_exec, temp);
+			temp = temp->next;
+		}
 	}
 }
 
