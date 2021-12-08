@@ -6,11 +6,12 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/01 13:29:29 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:21:55 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../libft/get_next_line.h"
 
 int	init_mini_struct_env(t_mini *mini, char **env)
 {
@@ -48,20 +49,6 @@ void	init_mini_struct(t_mini *mini, char **env)
 	mini->token = NULL;
 	if (init_mini_struct_env(mini, env) == -1)
 		exit (1);
-}
-
-void	main_mini_temp(t_mini *mini)
-{
-	mini->exec = ft_calloc(1, sizeof(t_exec));
-	mini->exec->infile_fd = 0;
-	mini->exec->outfile_fd = 1;
-	mini->exec->redir = NULL;
-	mini->exec->arg = ft_calloc(1, sizeof(t_arg));
-	mini->exec->arg->content = ft_strdup("echo");
-	mini->exec->arg->next = ft_calloc(1, sizeof(t_arg));
-	mini->exec->arg->next->content = ft_strdup("non");
-	mini->exec->arg->next->next = ft_calloc(1, sizeof(t_arg));
-	mini->exec->arg->next->next->content = ft_strdup("ouioui");
 }
 
 int	init_shell_level(t_mini *mini)
@@ -107,7 +94,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		line = readline(prompt);
-		add_history(line);
+		if (ft_strlen(line) > 0)
+			add_history(line);
 		parsing(&mini, line);
 	}
 	ft_free_env(&mini);

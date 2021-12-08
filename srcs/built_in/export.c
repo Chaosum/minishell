@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:45 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/28 01:58:16 by mservage         ###   ########.fr       */
+/*   Updated: 2021/12/08 11:56:05 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,9 @@ int	check_if_valid_var(char *arg, int *error)
 	int			i;
 
 	i = 0;
-	if (ft_isalpha(arg[i]))
+	while (ft_isalpha(arg[i]))
 		i++;
-	else
-	{
-		*error = 1;
-		write(2, "export: invalid identifiant\n", 29);
-		return (1);
-	}
-	while (arg[i] && arg[0] != '=')
+	while (arg[i] && arg[i] != '=')
 	{
 		if (ft_isalnum(arg[i]) == 0)
 		{

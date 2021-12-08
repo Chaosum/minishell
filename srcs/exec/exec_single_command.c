@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/28 02:15:40 by mservage         ###   ########.fr       */
+/*   Updated: 2021/12/08 01:54:24 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 		close(fd[1]);
 		fork_execve_define_path(mini, temp, args);
 	}
-	close(temp->infile_fd);
-	close(temp->outfile_fd);
+	if (temp->infile_fd != 0 && temp->infile_fd != 1)
+		close(temp->infile_fd);
+	if (temp->outfile_fd != 0 && temp->outfile_fd != 1)
+		close(temp->outfile_fd);
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid, &temp->return_value, 0);

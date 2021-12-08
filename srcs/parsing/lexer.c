@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/05 04:13:53 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:54:14 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ int	create_exec(t_mini *mini)
 		printf("Malloc error\n");
 		return (1);
 	}
+	temp->outfile_fd = 1;
 	ft_lstadd_back_exec(&mini->exec, temp);
 	return (0);
 }
@@ -265,6 +266,25 @@ int	lexer_exec(t_mini *mini)
 	}
 }
 
+void	free_lexer(t_mini *mini)
+{
+	t_token	*temp;
+
+	temp = mini->token;
+	if (mini->token)
+	{
+		while (temp)
+		{
+			if (temp->arg)
+				free(temp->arg);
+			temp = temp->next;
+			free(mini->token);
+			mini->token = temp;
+		}
+		free(mini->token);
+	}
+}
+
 void	lexer(t_mini *mini)
 {
 	t_token	*temp;
@@ -274,4 +294,5 @@ void	lexer(t_mini *mini)
 	print_token(mini);
 	parse_token(mini);
 	lexer_exec(mini);
+	free_lexer(mini);
 }

@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:41 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/18 19:03:29 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:04:50 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	delete_var(t_mini *mini, t_env *temp, t_env *previous)
 {
 	if (previous)
 		previous->next = temp->next;
-	mini->env = temp->next;
+	else
+		mini->env = temp->next;
 	free(temp->value);
 	free(temp);
 	return ;

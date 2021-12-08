@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/05 04:11:23 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/08 12:34:21 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	ft_free_pipe_tab(int *pipe_fd, int command_number)
 	{
 		while (i < command_number)
 		{
-			close(pipe_fd[i * 2]);
-			close(pipe_fd[i * 2 + 1]);
+			if (pipe_fd[i * 2] != 0 && pipe_fd[i * 2] != 1)
+				close(pipe_fd[i * 2]);
+			if (pipe_fd[i * 2 + 1] != 0 && pipe_fd[i * 2 + 1] != 1)
+				close(pipe_fd[i * 2 + 1]);
 			i++;
 		}
 	}
