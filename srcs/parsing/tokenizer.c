@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/05 03:53:06 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/06 13:59:42 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ int	start_token(char *line, t_mini *mini)
 	{
 		while (ft_isspace(line[i]))
 			i++;
+		if (line[i] == '|' && double_quote == 0 && single_quote == 0)
+		{
+			printf("Parse error near \"|\"\n");
+			return (1);
+		}
 		while (line[i])
 		{
 			if (line[i] == 34 && single_quote == 0)
@@ -143,13 +148,16 @@ int	start_token(char *line, t_mini *mini)
 					return (1);
 				break ;
 			}
-			else if ((line[i + 1] == 0 || ft_isspace(line[i + 1])) && i != prev
-				|| (line[i + 1] == '|' && double_quote == 0
-					&& single_quote == 0)
-				|| (line[i + 1] == '>' && double_quote == 0
-					&& single_quote == 0)
-				|| (line[i + 1] == '<' && double_quote == 0
-					&& single_quote == 0))
+			else if ((line[i + 1] == 0
+					|| ((ft_isspace(line[i + 1]) && double_quote == 0
+							&& single_quote == 0)
+						|| (line[i + 1] == '|' && double_quote == 0
+							&& single_quote == 0)
+						|| (line[i + 1] == '>' && double_quote == 0
+							&& single_quote == 0)
+						|| (line[i + 1] == '<' && double_quote == 0
+							&& single_quote == 0)
+						&& i != prev)))
 			{
 				if (create_token(mini, line, prev, i + 1))
 					return (1);

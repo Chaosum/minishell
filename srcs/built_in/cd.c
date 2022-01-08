@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/28 01:19:25 by mservage         ###   ########.fr       */
+/*   Updated: 2021/12/22 02:05:39 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	ft_cd(t_mini *mini, t_arg *prms)
 	char	**args;
 
 	args = ft_lstarg_in_tab(prms);
-	if (ft_tab_size(args) > 1)
+	if (ft_tab_size(args) > 2)
 	{
 		write(2, "cd: too many arguments\n", 24);
 		mini->exec->return_value = 1;

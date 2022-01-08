@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:48 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/27 23:59:12 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/05 23:48:44 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_exit(t_mini *mini, t_arg *prms)
 
 	exit_value = 1;
 	args = ft_lstarg_in_tab(prms);
-	if (ft_tab_size(args) > 1)
+	if (ft_tab_size(args) > 2)
 	{
 		write(2, "exit\n", 6);
 		write(2, "env: too many arguments\n", 25);

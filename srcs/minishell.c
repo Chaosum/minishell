@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/08 12:21:55 by matthieu         ###   ########.fr       */
+/*   Updated: 2021/12/15 13:34:03 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	main(int ac, char **av, char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		parsing(&mini, line);
+		free(line);
 	}
 	ft_free_env(&mini);
 	return (1);

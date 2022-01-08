@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/08 11:59:23 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/08 03:53:24 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	check_built_in(char *cmd)
 		return (1);
 	if (ft_strncmp(cmd, "unset", 6) == 0)
 		return (1);
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (1);
 	return (0);
 }
 
@@ -58,6 +60,8 @@ void	exec_built_in(t_mini *mini, char *cmd)
 		ft_export(mini, mini->exec->arg);
 	else if (ft_strncmp(cmd, "unset", 6) == 0)
 		ft_unset(mini, mini->exec->arg);
+	else if (ft_strncmp(cmd, "exit", 5) == 0)
+		ft_exit(mini, mini->exec->arg);
 }
 
 char	*define_command_path(char *path, char *command)
@@ -127,24 +131,27 @@ int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
 		}
 	}
 	temp->return_value = 1;
-	ft_free_tab(path);
-	ft_free_tab(args);
+	if (path)
+		ft_free_tab(path);
+	if (args)
+		ft_free_tab(args);
 	write(2, "Wrong command path\n", 20);
-	return (1);
+	free_lst_exec(mini);
+	clear_history();
+	exit (1);
 }
 
 void	setup_redir(t_mini *mini, t_exec *temp)
 {
 	while (temp && temp->redir)
 	{
-		if (ft_strncmp(mini->exec->redir->type, "<<",
-				ft_strlen("<<")))
+		if (ft_strncmp(mini->exec->redir->type, "<<", 3) == 0)
 			ft_heredoc(mini, temp);
-		else if (ft_strncmp(mini->exec->redir->type, "<", 2))
+		else if (ft_strncmp(mini->exec->redir->type, "<", 2) == 0)
 			ft_redir_infile(mini, temp);
-		else if (ft_strncmp(mini->exec->redir->type, ">", 2))
+		else if (ft_strncmp(mini->exec->redir->type, ">", 2) == 0)
 			ft_redir_outfile(mini, temp, 0);
-		else if (ft_strncmp(mini->exec->redir->type, ">>", 3))
+		else if (ft_strncmp(mini->exec->redir->type, ">>", 3) == 0)
 			ft_redir_outfile(mini, temp, 1);
 		temp->redir = temp->redir->next;
 	}

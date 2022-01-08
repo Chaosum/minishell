@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/21 02:55:17 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/08 03:54:49 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	ft_redir_infile(t_mini *mini, t_exec *exec)
 
 void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append)
 {
-	close(exec->outfile_fd);
+	if (exec->outfile_fd != 1 && exec->outfile_fd != 0)
+		close(exec->outfile_fd);
 	if (append == 0)
 	{
 		exec->redir->fd = open(exec->redir->file, O_CREAT | O_WRONLY | O_TRUNC);

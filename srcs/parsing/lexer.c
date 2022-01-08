@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/08 12:54:14 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/05 00:48:28 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,28 @@ char	*get_env_value(t_env *env)
 
 char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
 {
-	char	env[2048];
+	char	*env;
+	char	*temp_dest;
 	t_env	*temp_env;
 	int		k;
 
+	k = *i;
+	if (temp->arg[*i] == '?')
+	{
+		env = ft_itoa(mini->last_return_value);
+		*i = *i + 1;
+		return (env);
+	}
+	while (temp->arg[k] && ft_isalnum(temp->arg[k]))
+		k++;
+	env = ft_calloc(k + 1 - *i, sizeof(char));
 	k = 0;
-	while (temp->arg[*i] && ft_isalnum(temp->arg[*i]) && k < 2048)
+	while (temp->arg[*i] && ft_isalnum(temp->arg[*i]))
 	{
 		env[k] = temp->arg[*i];
 		*i = *i + 1;
 		k++;
 	}
-	env[k] = 0;
 	temp_env = get_env_var(env, mini);
 	*j = *j + ft_strlen(get_env_value(temp_env));
 	return (get_env_value(temp_env));
@@ -67,8 +77,9 @@ int	replace_braces(t_token *temp, t_mini *mini)
 		}
 		else if (temp->single_quote == 0 && temp->arg[i] == '$')
 		{
+			i++;
 			replace_temp = replace_by_env(mini, temp, &i, &j);
-			ft_strlcat(dest, replace_temp, ft_strlen(replace_temp));
+			ft_strlcat(dest, replace_temp, ft_strlen(replace_temp) + 1);
 		}
 		else
 			dest[j++] = temp->arg[i++];
@@ -290,9 +301,13 @@ void	lexer(t_mini *mini)
 	t_token	*temp;
 
 	temp = mini->token;
-	purge_token(mini);
-	print_token(mini);
-	parse_token(mini);
-	lexer_exec(mini);
-	free_lexer(mini);
+	if(temp)
+	{
+		purge_token(mini);
+		print_token(mini);
+		parse_token(mini);
+		print_token(mini);
+		lexer_exec(mini);
+		free_lexer(mini);
+	}
 }
