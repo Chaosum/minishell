@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:23:56 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/21 02:53:53 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/09 02:57:44 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ void	ft_heredoc(t_mini *mini, t_exec *temp2)
 	input = NULL;
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("heredoc> ");
 		if (line == NULL)
 			exit(666);
-		if (ft_strncmp(line, temp2->redir->file, ft_strlen(temp2->redir->file)))
+		if (ft_strncmp(line, temp2->redir->file,
+				ft_strlen(temp2->redir->file)) == 0)
 			break ;
 		temp = ft_strjoin(input, line);
 		if (temp == NULL)

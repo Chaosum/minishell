@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 16:06:35 by mservage          #+#    #+#             */
-/*   Updated: 2021/05/10 11:14:26 by rjeannot         ###   ########.fr       */
+/*   Updated: 2022/01/08 05:34:13 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ static int	s_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-		i++;
+	if (str)
+	{
+		while (str[i])
+			i++;
+	}
 	return (i);
 }
 
@@ -30,18 +33,23 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	if (!(s1 && s2))
+	if (s1 == NULL && s2 == NULL)
 		return (0);
-	dest = malloc(sizeof(char) * (s_strlen(s1) + s_strlen(s2) + 1));
+	dest = ft_calloc(s_strlen(s1) + s_strlen(s2) + 1, sizeof(char));
 	if (dest == NULL)
 		return (NULL);
-	while (s1[i])
+	if (s1)
 	{
-		dest[i] = s1[i];
-		i++;
+		while (s1[i])
+		{
+			dest[i] = s1[i];
+			i++;
+		}
 	}
-	while (s2[j])
-		dest[i++] = s2[j++];
-	dest[i] = 0;
+	if (s2)
+	{
+		while (s2[j])
+			dest[i++] = s2[j++];
+	}
 	return (dest);
 }

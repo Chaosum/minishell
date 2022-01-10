@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2021/12/22 01:54:35 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/09 02:57:19 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 	if (pid == 0)
 	{
 		args = ft_lstarg_in_tab(temp->arg);
+		if (temp->heredoc)
+		{
+			write(0, temp->heredoc, ft_strlen(temp->heredoc));
+		}
 		if (args == NULL)
 		{
 			close(fd[0]);

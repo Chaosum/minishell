@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/05 00:48:28 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/08 04:43:30 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,8 @@ int	parse_token(t_mini *mini)
 	temp = mini->token;
 	while (temp)
 	{
-		if (temp->etat == 0 || temp->etat == 1 || temp->etat == 2)
+		if (temp->etat == 0 || temp->etat == 1 || temp->etat == 2
+			|| temp->etat == 3)
 		{
 			check_token_redir(mini, temp);
 		}
