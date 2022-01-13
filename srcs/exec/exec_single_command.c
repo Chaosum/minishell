@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/09 02:57:19 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/13 16:29:03 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 		mini->exec->return_value = 1;
 		return ;
 	}
+	if (temp->heredoc)
+	{
+		temp->infile_fd = fd[0];
+		write(fd[1], temp->heredoc, ft_strlen(temp->heredoc));
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -34,10 +39,6 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 	if (pid == 0)
 	{
 		args = ft_lstarg_in_tab(temp->arg);
-		if (temp->heredoc)
-		{
-			write(0, temp->heredoc, ft_strlen(temp->heredoc));
-		}
 		if (args == NULL)
 		{
 			close(fd[0]);

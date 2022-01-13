@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_infile.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/08 03:54:49 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/13 18:39:00 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ int	redir_check_opening_error(t_mini *mini, t_exec *exec)
 
 void	ft_redir_infile(t_mini *mini, t_exec *exec)
 {
-	close(exec->infile_fd);
-	exec->redir->fd = open(exec->redir->file, O_CREAT | O_RDONLY);
+	if (exec->outfile_fd != 1 && exec->outfile_fd != 0)
+		close(exec->infile_fd);
+	exec->redir->fd = open(exec->redir->file, O_RDONLY);
 	if (redir_check_opening_error(mini, exec))
 		exit(666);
 	exec->index.infile = 1;
@@ -42,7 +43,8 @@ void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append)
 		close(exec->outfile_fd);
 	if (append == 0)
 	{
-		exec->redir->fd = open(exec->redir->file, O_CREAT | O_WRONLY | O_TRUNC);
+		exec->redir->fd = open(exec->redir->file,
+				O_CREAT | O_WRONLY | O_TRUNC, 0777);
 		if (redir_check_opening_error(mini, exec))
 			exit(666);
 		exec->index.outfile++;
@@ -51,7 +53,7 @@ void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append)
 	if (append == 1)
 	{
 		exec->redir->fd = open(exec->redir->file,
-				O_CREAT | O_WRONLY | O_APPEND);
+				O_CREAT | O_WRONLY | O_APPEND, 0777);
 		if (redir_check_opening_error(mini, exec))
 			exit(666);
 		exec->index.outfile++;

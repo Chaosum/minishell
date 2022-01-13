@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/06 13:59:42 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/13 18:33:25 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	create_redir_token(t_mini *mini, char *line, int *i)
 		else
 		{
 			token->arg = ft_strdup("<");
-			token->etat = redirection_out;
+			token->etat = redirection_in;
 			*i = *i + 1;
 		}
 	}
@@ -114,6 +114,37 @@ int	create_token(t_mini *mini, char *line, int start, int max)
 	return (0);
 }
 
+int	is_token(int double_quote, int single_quote, int i, char *line)
+{
+	if (line[i + 1] == 0
+		|| (ft_isspace(line[i + 1]) && double_quote == 0
+			&& single_quote == 0)
+		|| (line[i + 1] == '|' && double_quote == 0
+			&& single_quote == 0)
+		|| (line[i + 1] == '>' && double_quote == 0
+			&& single_quote == 0)
+		|| (line[i + 1] == '<' && double_quote == 0
+			&& single_quote == 0))
+		return (1);
+	return (0);
+}
+
+int	is_redir(int double_quote, int single_quote, int i, char *line)
+{
+	if ((line[i] == '|' || line[i] == '>' || line[i] == '<')
+		&& double_quote == 0
+		&& single_quote == 0)
+		return (1);
+	return (0);
+}
+
+void	skip_isspace(char *line, int *i, int *prev)
+{
+	while (ft_isspace(line[*i]))
+		*i = *i + 1;
+	*prev = *i;
+}
+
 int	start_token(char *line, t_mini *mini)
 {
 	int		i;
@@ -127,8 +158,7 @@ int	start_token(char *line, t_mini *mini)
 	double_quote = 0;
 	while (line[i])
 	{
-		while (ft_isspace(line[i]))
-			i++;
+		skip_isspace(line, &i, &prev);
 		if (line[i] == '|' && double_quote == 0 && single_quote == 0)
 		{
 			printf("Parse error near \"|\"\n");
@@ -140,24 +170,13 @@ int	start_token(char *line, t_mini *mini)
 				double_quote = !double_quote;
 			else if (line[i] == 39 && double_quote == 0)
 				single_quote = !single_quote;
-			if ((line[i] == '|' || line[i] == '>' || line[i] == '<')
-				&& double_quote == 0
-				&& single_quote == 0)
+			if (is_redir(double_quote, single_quote, i, line))
 			{
 				if (create_redir_token(mini, line, &i))
 					return (1);
 				break ;
 			}
-			else if ((line[i + 1] == 0
-					|| ((ft_isspace(line[i + 1]) && double_quote == 0
-							&& single_quote == 0)
-						|| (line[i + 1] == '|' && double_quote == 0
-							&& single_quote == 0)
-						|| (line[i + 1] == '>' && double_quote == 0
-							&& single_quote == 0)
-						|| (line[i + 1] == '<' && double_quote == 0
-							&& single_quote == 0)
-						&& i != prev)))
+			else if (is_token(double_quote, single_quote, i, line))
 			{
 				if (create_token(mini, line, prev, i + 1))
 					return (1);
@@ -166,9 +185,7 @@ int	start_token(char *line, t_mini *mini)
 			}
 			i++;
 		}
-		while (ft_isspace(line[i]))
-			i++;
-		prev = i;
+		skip_isspace(line, &i, &prev);
 	}
 	if (double_quote || single_quote)
 		printf("Double quotes error\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/08 04:43:30 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/13 18:36:36 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,20 @@ int	replace_braces(t_token *temp, t_mini *mini)
 	j = 0;
 	while (temp->arg[i])
 	{
-		if (temp->arg[i] == 34)
-		{
+		if (temp->arg[i] == 34 && temp->single_quote == 0)
 			temp->double_quote = !temp->double_quote;
-			i++;
-		}
-		else if (temp->arg[i] == 39)
-		{
+		else if (temp->arg[i] == 39 && temp->double_quote == 0)
 			temp->single_quote = !temp->single_quote;
-			i++;
-		}
 		else if (temp->single_quote == 0 && temp->arg[i] == '$')
 		{
 			i++;
 			replace_temp = replace_by_env(mini, temp, &i, &j);
 			ft_strlcat(dest, replace_temp, ft_strlen(replace_temp) + 1);
+			i--;
 		}
 		else
-			dest[j++] = temp->arg[i++];
+			dest[j++] = temp->arg[i];
+		i++;
 	}
 	free(temp->arg);
 	temp->arg = ft_strdup(dest);
@@ -120,6 +116,7 @@ int	purge_token(t_mini *mini)
 		replace_braces(temp, mini);
 		temp = temp->next;
 	}
+	return (0);
 }
 
 int	check_token_redir(t_mini *mini, t_token *temp)
@@ -174,34 +171,35 @@ int	create_redir(t_mini *mini, t_exec *exec, t_token *temp)
 	t_redir	*redir;
 
 	redir = ft_calloc(1, sizeof(t_redir));
-	if (temp->etat == 0)
+	if (temp->etat == redirection_in)
 	{
 		redir->type = ft_strdup("<");
 		if (temp->next)
 			redir->file = ft_strdup(temp->next->arg);
 		ft_lstadd_back_redir(&exec->redir, redir);
 	}
-	if (temp->etat == 1)
+	if (temp->etat == redirection_out)
 	{
 		redir->type = ft_strdup(">");
 		if (temp->next)
 			redir->file = ft_strdup(temp->next->arg);
 		ft_lstadd_back_redir(&exec->redir, redir);
 	}
-	if (temp->etat == 2)
+	if (temp->etat == redirection_out_append)
 	{
 		redir->type = ft_strdup(">>");
 		if (temp->next)
 			redir->file = ft_strdup(temp->next->arg);
 		ft_lstadd_back_redir(&exec->redir, redir);
 	}
-	if (temp->etat == 3)
+	if (temp->etat == heredoc)
 	{
 		redir->type = ft_strdup("<<");
 		if (temp->next)
 			redir->file = ft_strdup(temp->next->arg);
 		ft_lstadd_back_redir(&exec->redir, redir);
 	}
+	return (0);
 }
 
 int	create_exec(t_mini *mini)
@@ -276,6 +274,7 @@ int	lexer_exec(t_mini *mini)
 			temp = temp->next;
 		}
 	}
+	return (0);
 }
 
 void	free_lexer(t_mini *mini)
@@ -302,12 +301,12 @@ void	lexer(t_mini *mini)
 	t_token	*temp;
 
 	temp = mini->token;
-	if(temp)
+	if (temp)
 	{
 		purge_token(mini);
-		print_token(mini);
+			print_token(mini);
 		parse_token(mini);
-		print_token(mini);
+			print_token(mini);
 		lexer_exec(mini);
 		free_lexer(mini);
 	}
