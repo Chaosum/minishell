@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/13 16:29:03 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:48:38 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	sigint_handler_cat(int signum)
+{
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
 
 void	exec_single_case_function(t_mini *mini, t_exec *temp)
 {
@@ -36,8 +43,10 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 		mini->exec->return_value = 1;
 		return ;
 	}
+	signal(SIGINT, &sigint_handler_cat);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		args = ft_lstarg_in_tab(temp->arg);
 		if (args == NULL)
 		{
@@ -62,6 +71,7 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 		close(temp->outfile_fd);
 	close(fd[0]);
 	close(fd[1]);
+	signal(SIGINT, &sigint_handler_cat);
 	waitpid(pid, &temp->return_value, 0);
 }
 

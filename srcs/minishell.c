@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/15 13:34:03 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/19 14:31:46 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,17 @@ int	init_shell_level(t_mini *mini)
 	return (0);
 }
 
+void	sigint_handler(int signum)
+{
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char		*line;
-	char		*prompt;
 	t_mini		mini;
 
 	init_mini_struct(&mini, env);
@@ -89,15 +96,19 @@ int	main(int ac, char **av, char **env)
 		ft_free_env(&mini);
 		return (1);
 	}
-	line = NULL;
-	prompt = "$minishell> ";
 	while (1)
 	{
-		line = readline(prompt);
+		signal(SIGINT, &sigint_handler);
+		line = readline("$minishell> ");
 		if (ft_strlen(line) > 0)
 			add_history(line);
-		parsing(&mini, line);
-		free(line);
+		if (line)
+		{
+			parsing(&mini, line);
+			free(line);
+		}
+		else
+			exit(130);
 	}
 	ft_free_env(&mini);
 	return (1);

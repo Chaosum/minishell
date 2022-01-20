@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/13 18:33:25 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/18 22:54:10 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,11 @@ int	start_token(char *line, t_mini *mini)
 	while (line[i])
 	{
 		skip_isspace(line, &i, &prev);
-		if (line[i] == '|' && double_quote == 0 && single_quote == 0)
+		/*if (line[i] == '|' && double_quote == 0 && single_quote == 0)
 		{
 			printf("Parse error near \"|\"\n");
 			return (1);
-		}
+		}*/
 		while (line[i])
 		{
 			if (line[i] == 34 && single_quote == 0)

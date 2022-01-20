@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/30 16:22:53 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/18 13:56:24 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>

@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2021/12/08 12:34:21 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:03:32 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	multiple_command_case(t_mini *mini, int command_number)
 		i++;
 	}
 	i = 0;
+	signal(SIGINT, SIG_IGN);
 	while (i < command_number)
 	{
 		pid[i] = fork();
@@ -101,6 +102,7 @@ void	multiple_command_case(t_mini *mini, int command_number)
 		}
 		if (pid[i] == 0)
 		{
+			signal(SIGINT, SIG_DFL);
 			if (i == 0)
 				dup2(mini->exec->infile_fd, 0);
 			else
