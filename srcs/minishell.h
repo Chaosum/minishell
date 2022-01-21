@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/18 13:56:24 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:20:30 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int		init_mini_struct_env(t_mini *mini, char **env);
 void	init_mini_struct(t_mini *mini, char **env);
 void	main_mini_temp(t_mini *mini);
 int		init_shell_level(t_mini *mini);
+void	sigint_handler(int signum);
 int		main(int ac, char **av, char **env);
 
 #endif
