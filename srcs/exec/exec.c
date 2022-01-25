@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/08 03:53:24 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/25 17:40:11 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ int	ft_lst_size_exec(t_exec	*exec)
 	int		i;
 
 	i = 0;
-	temp = exec;
-	while (temp)
+	if (exec)
 	{
-		temp = temp->next;
-		i++;
+		temp = exec;
+		while (temp)
+		{
+			temp = temp->next;
+			i++;
+		}
 	}
 	return (i);
 }
@@ -153,6 +156,8 @@ void	setup_redir(t_mini *mini, t_exec *temp)
 			ft_redir_outfile(mini, temp, 0);
 		else if (ft_strncmp(mini->exec->redir->type, ">>", 3) == 0)
 			ft_redir_outfile(mini, temp, 1);
+		if (temp->heredoc_error)
+			return ;
 		temp->redir = temp->redir->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/02 18:17:27 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/25 17:28:06 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_exec
 	t_arg					*arg;
 	t_redir					*redir;
 	char					*heredoc;
+	int						heredoc_error;
 	int						infile_fd;
 	int						outfile_fd;
 	int						return_value;

@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/18 21:48:38 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/25 17:50:08 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,12 @@ void	single_command_case(t_mini *mini)
 	temp = mini->exec;
 	if (mini->exec->redir)
 		setup_redir(mini, temp);
-	execute_single_command(mini);
-	mini->last_return_value = mini->exec->return_value;
+	if (temp->heredoc_error == 0)
+	{
+		execute_single_command(mini);
+		mini->last_return_value = mini->exec->return_value;
+	}
+	else
+		return ;
 	return ;
 }
