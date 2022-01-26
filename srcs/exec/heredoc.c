@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:23:56 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/25 18:12:50 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:07:45 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,25 @@ void	sigint_handler_heredoc(int signum)
 	exit(130);
 }
 
+void	free_mini_heredoc(t_mini *mini)
+{
+	if (mini->exec)
+	{
+		free_lst_exec(mini);
+	}
+}
+
+void	heredoc_fork(t_mini *mini, t_exec *temp2, int fd[2])
+{
+	signal(SIGINT, &sigint_handler_heredoc);
+	heredoc_pipe(temp2, fd);
+	close(fd[0]);
+	close(fd[1]);
+	free_mini_heredoc(mini);
+	exit(0);
+	return ;
+}
+
 void	ft_heredoc(t_mini *mini, t_exec *temp2)
 {
 	int		fd[2];
@@ -65,13 +84,7 @@ void	ft_heredoc(t_mini *mini, t_exec *temp2)
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-	{
-		signal(SIGINT, &sigint_handler_heredoc);
-		heredoc_pipe(temp2, fd);
-		close(fd[0]);
-		close(fd[1]);
-		exit(0);
-	}
+		heredoc_fork(mini, temp2, fd);
 	waitpid(pid, &mini->last_return_value, 0);
 	read(fd[0], buf, 1);
 	while (buf[0] != 0 && mini->last_return_value == 0)
@@ -89,5 +102,5 @@ void	ft_heredoc(t_mini *mini, t_exec *temp2)
 	close(fd[0]);
 	close(fd[1]);
 	temp2->index.heredoc = 1;
-	printf("end = |%s|\n", temp2->heredoc);
+	printf("END |%s|", temp2->heredoc);
 }
