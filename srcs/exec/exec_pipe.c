@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/18 21:03:32 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 15:34:05 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	execute_pipe_command(t_mini *mini, t_exec *temp)
 	return (1);
 }
 
-void	ft_wait_fork(t_mini *mini, t_exec *temp, pid_t *pid, int cmd_nbr)
+void	ft_wait_fork(pid_t *pid, int cmd_nbr)
 {
 	int	i;
 	int	wstatus;
@@ -102,6 +102,7 @@ void	multiple_command_case(t_mini *mini, int command_number)
 		}
 		if (pid[i] == 0)
 		{
+			signal(SIGQUIT, SIG_DFL);
 			signal(SIGINT, SIG_DFL);
 			if (i == 0)
 				dup2(mini->exec->infile_fd, 0);
@@ -118,6 +119,8 @@ void	multiple_command_case(t_mini *mini, int command_number)
 		i++;
 	}
 	ft_free_pipe_tab(pipe_fd, command_number);
-	ft_wait_fork(mini, temp, pid, command_number);
+	signal(SIGINT, &sigint_handler_cat);
+	signal(SIGQUIT, &sigint_handler_quit);
+	ft_wait_fork(pid, command_number);
 	return ;
 }

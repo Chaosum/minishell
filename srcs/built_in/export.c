@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:45 by mservage          #+#    #+#             */
-/*   Updated: 2021/12/08 11:56:05 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 14:55:53 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	modify_existing_var(t_mini *mini, char *args)
 	{
 		if (ft_strncmp(args, temp->value, i) == 0)
 		{
-			change_env_var_value(mini, temp, &args[i]);
+			change_env_var_value(temp, &args[i]);
 			return (0);
 		}
 		temp = temp->next;

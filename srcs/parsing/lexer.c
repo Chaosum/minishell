@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/13 18:36:36 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/27 15:02:36 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*get_env_value(t_env *env)
 char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
 {
 	char	*env;
-	char	*temp_dest;
 	t_env	*temp_env;
 	int		k;
 
@@ -119,7 +118,7 @@ int	purge_token(t_mini *mini)
 	return (0);
 }
 
-int	check_token_redir(t_mini *mini, t_token *temp)
+int	check_token_redir(t_token *temp)
 {
 	if (temp->next)
 	{
@@ -157,7 +156,7 @@ int	parse_token(t_mini *mini)
 		if (temp->etat == 0 || temp->etat == 1 || temp->etat == 2
 			|| temp->etat == 3)
 		{
-			check_token_redir(mini, temp);
+			check_token_redir(temp);
 		}
 		else if (temp->etat != is_pipe)
 			temp->etat = litteral;
@@ -166,7 +165,7 @@ int	parse_token(t_mini *mini)
 	return (0);
 }
 
-int	create_redir(t_mini *mini, t_exec *exec, t_token *temp)
+int	create_redir(t_exec *exec, t_token *temp)
 {
 	t_redir	*redir;
 
@@ -217,7 +216,7 @@ int	create_exec(t_mini *mini)
 	return (0);
 }
 
-int	create_arg(t_mini *mini, t_exec *exec, t_token *temp)
+int	create_arg(t_exec *exec, t_token *temp)
 {
 	t_arg	*arg;
 
@@ -257,10 +256,15 @@ int	lexer_exec(t_mini *mini)
 	{
 		if (temp->etat < 4)
 		{
-			create_redir(mini, temp_exec, temp);
+			create_redir(temp_exec, temp);
 			temp = temp->next;
 			if (temp)
 				temp = temp->next;
+			else
+			{
+				printf("parse error near %s\n", temp->arg);
+				return (1);
+			}
 		}
 		else if (temp->etat == is_pipe)
 		{
@@ -270,7 +274,7 @@ int	lexer_exec(t_mini *mini)
 		}
 		else
 		{
-			create_arg(mini, temp_exec, temp);
+			create_arg(temp_exec, temp);
 			temp = temp->next;
 		}
 	}
@@ -296,18 +300,21 @@ void	free_lexer(t_mini *mini)
 	}
 }
 
-void	lexer(t_mini *mini)
+int	lexer(t_mini *mini)
 {
 	t_token	*temp;
+	int		ret;
 
 	temp = mini->token;
+	ret = 0;
 	if (temp)
 	{
 		purge_token(mini);
-			print_token(mini);
+		print_token(mini);//
 		parse_token(mini);
-			print_token(mini);
-		lexer_exec(mini);
+		print_token(mini);//
+		ret = lexer_exec(mini);
 		free_lexer(mini);
 	}
+	return (ret);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 16:29:08 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/25 17:50:08 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 18:13:48 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,22 @@
 
 void	sigint_handler_cat(int signum)
 {
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	if (signum)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+}
+
+void	sigint_handler_quit(int signum)
+{
+	if (signum)
+	{
+		printf("Quit: 3\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 }
 
 void	exec_single_case_function(t_mini *mini, t_exec *temp)
@@ -46,6 +59,7 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 	signal(SIGINT, &sigint_handler_cat);
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		args = ft_lstarg_in_tab(temp->arg);
 		if (args == NULL)
@@ -72,6 +86,7 @@ void	exec_single_case_function(t_mini *mini, t_exec *temp)
 	close(fd[0]);
 	close(fd[1]);
 	signal(SIGINT, &sigint_handler_cat);
+	signal(SIGQUIT, &sigint_handler_quit);
 	waitpid(pid, &temp->return_value, 0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/25 17:40:11 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:19:04 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
 	char	*command_path;
 	char	**path;
 
+	path = NULL;
 	i = 0;
 	if (ft_strncmp(args[0], "/", 1) == 0
 		|| ft_strncmp(args[0], "./", 2) == 0)
@@ -146,25 +147,28 @@ int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
 
 void	setup_redir(t_mini *mini, t_exec *temp)
 {
-	while (temp && temp->redir)
+	t_redir	*temp_redir;
+
+	temp_redir = temp->redir;
+	while (temp_redir)
 	{
-		if (ft_strncmp(mini->exec->redir->type, "<<", 3) == 0)
-			ft_heredoc(mini, temp);
-		else if (ft_strncmp(mini->exec->redir->type, "<", 2) == 0)
-			ft_redir_infile(mini, temp);
-		else if (ft_strncmp(mini->exec->redir->type, ">", 2) == 0)
-			ft_redir_outfile(mini, temp, 0);
-		else if (ft_strncmp(mini->exec->redir->type, ">>", 3) == 0)
-			ft_redir_outfile(mini, temp, 1);
+		if (ft_strncmp(temp_redir->type, "<<", 3) == 0)
+			ft_heredoc(mini, temp, temp_redir);
+		else if (ft_strncmp(temp_redir->type, "<", 2) == 0)
+			ft_redir_infile(temp, temp_redir);
+		else if (ft_strncmp(temp_redir->type, ">", 2) == 0)
+			ft_redir_outfile(temp, temp_redir, 0);
+		else if (ft_strncmp(temp_redir->type, ">>", 3) == 0)
+			ft_redir_outfile(temp, temp_redir, 1);
 		if (temp->heredoc_error)
 			return ;
-		temp->redir = temp->redir->next;
+		temp_redir = temp_redir->next;
 	}
 }
 
 void	ft_free_env(t_mini *mini)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	while (mini->env)
 	{

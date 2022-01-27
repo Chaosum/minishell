@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:41 by mservage          #+#    #+#             */
-/*   Updated: 2021/12/08 12:04:50 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 14:56:45 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_unset(t_mini *mini, t_arg *prms)
 {
 	char	**args;
 	int		i;
-	int		j;
 	int		error;
 
 	i = 0;

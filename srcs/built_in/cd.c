@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2021/12/22 02:05:39 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 14:55:45 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	change_oldpwd(t_mini *mini, char *old_path)
 		getcwd(path, PATH_MAX);
 	else
 		ft_strlcpy(path, old_path, ft_strlen(old_path));
-	change_env_var_value(mini, temp, path);
+	change_env_var_value(temp, path);
 }
 
 void	change_pwd(t_mini *mini, char *path)
@@ -75,7 +75,7 @@ void	change_pwd(t_mini *mini, char *path)
 
 	temp = get_env_var("PWD=", mini);
 	chdir(path);
-	change_env_var_value(mini, temp, path);
+	change_env_var_value(temp, path);
 	return ;
 }
 

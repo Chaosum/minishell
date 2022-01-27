@@ -6,7 +6,7 @@ NAME		= libft.a
 
 CC			= gcc
 
-CFLAGS		=  -g3 -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		=  #-g3 -fsanitize=address -Wall -Wextra -Werror
 
 all:        ${NAME}
 

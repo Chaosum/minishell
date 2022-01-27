@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/26 16:16:09 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 15:20:59 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	init_shell_level(t_mini *mini)
 		content = ft_itoa(value);
 		if (content == NULL)
 			return (1);
-		change_env_var_value(mini, temp, content);
+		change_env_var_value(temp, content);
 		free(content);
 	}
 	return (0);
@@ -79,10 +79,13 @@ int	init_shell_level(t_mini *mini)
 
 void	sigint_handler(int signum)
 {
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (signum)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -90,6 +93,8 @@ int	main(int ac, char **av, char **env)
 	char		*line;
 	t_mini		mini;
 
+	ac = 1;
+	av = NULL;
 	init_mini_struct(&mini, env);
 	if (init_shell_level(&mini))
 	{
@@ -98,6 +103,7 @@ int	main(int ac, char **av, char **env)
 	}
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, &sigint_handler);
 		line = readline("$minishell> ");
 		if (ft_strlen(line) > 0)
@@ -110,6 +116,7 @@ int	main(int ac, char **av, char **env)
 		else
 			exit(130);
 	}
+	rl_clear_history();
 	ft_free_env(&mini);
 	free_lst_exec(&mini);
 	return (1);

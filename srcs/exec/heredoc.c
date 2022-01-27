@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:23:56 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/26 16:07:45 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:15:48 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	heredoc_pipe(t_exec *temp2, int fd[2])
+void	heredoc_pipe(t_redir *temp_redir, int fd[2])
 {
 	char	*line;
 	char	*temp;
@@ -25,11 +25,11 @@ void	heredoc_pipe(t_exec *temp2, int fd[2])
 		if (line == NULL)
 		{
 			printf("Warning heredoc ended with EOF instead of %s\n",
-				temp2->redir->file);
+				temp_redir->file);
 			break ;
 		}
-		if (ft_strncmp(line, temp2->redir->file,
-				ft_strlen(temp2->redir->file)) == 0)
+		if (ft_strncmp(line, temp_redir->file,
+				ft_strlen(temp_redir->file)) == 0)
 			break ;
 		temp = ft_strjoin(input, line);
 		free(line);
@@ -44,11 +44,14 @@ void	heredoc_pipe(t_exec *temp2, int fd[2])
 
 void	sigint_handler_heredoc(int signum)
 {
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	exit(130);
+	if (signum)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		exit(130);
+	}
 }
 
 void	free_mini_heredoc(t_mini *mini)
@@ -59,10 +62,10 @@ void	free_mini_heredoc(t_mini *mini)
 	}
 }
 
-void	heredoc_fork(t_mini *mini, t_exec *temp2, int fd[2])
+void	heredoc_fork(t_mini *mini, t_exec *temp_exec, int fd[2], t_redir *temp_redir)
 {
 	signal(SIGINT, &sigint_handler_heredoc);
-	heredoc_pipe(temp2, fd);
+	heredoc_pipe(temp_redir, fd);
 	close(fd[0]);
 	close(fd[1]);
 	free_mini_heredoc(mini);
@@ -70,13 +73,12 @@ void	heredoc_fork(t_mini *mini, t_exec *temp2, int fd[2])
 	return ;
 }
 
-void	ft_heredoc(t_mini *mini, t_exec *temp2)
+void	ft_heredoc(t_mini *mini, t_exec *temp_exec, t_redir *temp_redir)
 {
 	int		fd[2];
 	pid_t	pid;
 	char	buf[2];
 	char	*temp;
-	int		wstatus;
 
 	temp = NULL;
 	buf[1] = 0;
@@ -84,23 +86,23 @@ void	ft_heredoc(t_mini *mini, t_exec *temp2)
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
-		heredoc_fork(mini, temp2, fd);
+		heredoc_fork(mini, temp_exec, fd, temp_redir);
 	waitpid(pid, &mini->last_return_value, 0);
 	read(fd[0], buf, 1);
 	while (buf[0] != 0 && mini->last_return_value == 0)
 	{
-		temp = ft_strjoin(temp2->heredoc, buf);
-		free(temp2->heredoc);
-		temp2->heredoc = ft_strdup(temp);
+		temp = ft_strjoin(temp_exec->heredoc, buf);
+		free(temp_exec->heredoc);
+		temp_exec->heredoc = ft_strdup(temp);
 		free(temp);
 		read(fd[0], buf, 1);
 	}
-	if (temp2->heredoc == NULL)
-		temp2->heredoc = ft_strdup("");
+	if (temp_exec->heredoc == NULL)
+		temp_exec->heredoc = ft_strdup("");
 	if (mini->last_return_value)
-		temp2->heredoc_error = 1;
+		temp_exec->heredoc_error = 1;
 	close(fd[0]);
 	close(fd[1]);
-	temp2->index.heredoc = 1;
-	printf("END |%s|", temp2->heredoc);
+	temp_exec->index.heredoc = 1;
+	temp_exec->index.infile = 0;
 }

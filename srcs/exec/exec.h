@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2021/11/17 11:11:20 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 18:52:55 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	multiple_command_case(t_mini *mini, int command_number);
 
 /* exec_single_case_function.c */
 
+void	sigint_handler_cat(int signum);
+void	sigint_handler_quit(int signum);
 void	exec_single_case_function(t_mini *mini, t_exec *temp);
 int		execute_single_command(t_mini *mini);
 void	single_command_case(t_mini *mini);
@@ -42,12 +44,12 @@ void	ft_execution(t_mini *mini);
 
 /* heredoc.c */
 
-void	ft_heredoc(t_mini *mini, t_exec *temp2);
+void	ft_heredoc(t_mini *mini, t_exec *temp_exec, t_redir *temp_redir);
 
 /* redir_infile.c */
 
-int		redir_check_opening_error(t_mini *mini, t_exec *exec);
-void	ft_redir_infile(t_mini *mini, t_exec *exec);
-void	ft_redir_outfile(t_mini *mini, t_exec *exec, int append);
+int		redir_check_opening_error(t_redir *temp_redir);
+void	ft_redir_infile(t_exec *exec, t_redir *temp_redir);
+void	ft_redir_outfile(t_exec *exec, t_redir *temp_redir, int append);
 
 #endif

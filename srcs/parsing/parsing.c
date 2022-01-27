@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/13 17:34:01 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/27 13:56:23 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	parsing(t_mini *mini, char *line)
 {
-	start_token(line, mini);
-	lexer(mini);
-	ft_execution(mini);
+	if (start_token(line, mini) == 0)
+	{
+		if (lexer(mini) == 0)
+			ft_execution(mini);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:09:03 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/12 17:29:19 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/27 14:54:36 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_add_env_var(char *value, t_mini *mini)
 	ft_lstadd_back_env(&mini->env, temp);
 }
 
-void	change_env_var_value(t_mini *mini, t_env *var, char *content)
+void	change_env_var_value(t_env *var, char *content)
 {
 	char	*temp;
 	int		i;

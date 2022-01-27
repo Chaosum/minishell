@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 11:45:47 by matthieu          #+#    #+#             */
-/*   Updated: 2021/10/28 01:39:02 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/27 14:55:07 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ void	ft_lstadd_front_env(t_env **alst, t_env *new);
 int		ft_tab_size(char **tab);
 t_env	*get_env_var(char *get, t_mini *mini);
 void	ft_add_env_var(char *value, t_mini *mini);
-void	change_env_var_value(t_mini *mini, t_env *var, char *content);
+void	change_env_var_value(t_env *var, char *content);
 
 #endif

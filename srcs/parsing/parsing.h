@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:27:06 by rjeannot          #+#    #+#             */
-/*   Updated: 2021/12/04 02:26:04 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 13:57:31 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j);
 int		replace_braces(t_token *temp, t_mini *mini);
 void	print_token(t_mini *mini);
 int		purge_token(t_mini *mini);
-void	lexer(t_mini *mini);
+int		lexer(t_mini *mini);
 
 /* parsing_utils */
 int		ft_isspace(char c);

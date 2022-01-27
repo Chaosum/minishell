@@ -34,15 +34,15 @@ NAME				= minishell
 
 CC					= gcc
 
-CFLAGS				= -g3 -fsanitize=address # -Wall -Wextra -Werror
+CFLAGS				= #-g3 -fsanitize=address -Wall -Wextra -Werror
 
 all:		MAKELIBFT ${NAME}
 
 %.o:		%.c
-			${CC} ${CFLAGS} -o $@ -c $<
+			${CC} ${CFLAGS} -I${shell brew --prefix readline}/include -o $@ -c $<
 
 ${NAME}:	${OBJS}
-				gcc ${CFLAGS} -o ${NAME} ${OBJS} ./libft/libft.a -lreadline
+				gcc ${CFLAGS} -o ${NAME} ${OBJS} ./libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline
 				@echo compilation complete !
 			
 

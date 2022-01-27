@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/18 22:54:10 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/27 15:03:11 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	free_token(t_mini *mini)
 {
+	if (mini)
+		;
 }
 
 int	create_redir_token(t_mini *mini, char *line, int *i)
@@ -188,6 +190,9 @@ int	start_token(char *line, t_mini *mini)
 		skip_isspace(line, &i, &prev);
 	}
 	if (double_quote || single_quote)
+	{
 		printf("Double quotes error\n");
+		return (1);
+	}
 	return (0);
 }
