@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:41 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/27 14:56:45 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:42:44 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	ft_remove_env(t_mini *mini, char *arg)
 {
 	t_env	*temp;
 	t_env	*previous;
-	int		i;
 
-	i = 0;
 	previous = NULL;
 	temp = mini->env;
 	while (temp)

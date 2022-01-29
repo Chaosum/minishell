@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:26:27 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/28 01:28:40 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:42:33 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 /* cd.c */
 
-int		t_arg_number_content(t_arg *temp);
-char	**ft_lstarg_in_tab(t_arg *prms);
 void	change_oldpwd(t_mini *mini, char *old_path);
 void	change_pwd(t_mini *mini, char *path);
 void	cd_no_arg(t_mini *mini);
@@ -47,7 +45,7 @@ void	ft_export(t_mini *mini, t_arg *prms);
 
 /* pwd.c */
 
-void	ft_pwd(t_mini *mini, t_arg *prms);
+void	ft_pwd(t_mini *mini);
 
 /* unset.c */
 

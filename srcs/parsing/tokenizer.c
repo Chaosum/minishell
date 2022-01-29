@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/27 15:03:11 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:25:10 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	free_token(t_mini *mini)
-{
-	if (mini)
-		;
-}
 
 int	create_redir_token(t_mini *mini, char *line, int *i)
 {
@@ -24,12 +18,20 @@ int	create_redir_token(t_mini *mini, char *line, int *i)
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (token == NULL)
-		free_token(mini); /* a free correctement */
+	{
+		free_lexer(mini);
+		printf("Malloc error during parsing\n");
+		return (1);
+	}
 	if (line[*i] == '|')
 	{
 		token->arg = ft_strdup("|");
 		if (token->arg == NULL)
-			free_token(mini);
+		{
+			free_lexer(mini);
+			printf("Malloc error during parsing\n");
+			return (1);
+		}
 		token->etat = is_pipe;
 		*i = *i + 1;
 	}
@@ -96,14 +98,16 @@ int	create_token(t_mini *mini, char *line, int start, int max)
 	token = ft_calloc(1, sizeof(t_token));
 	if (token == NULL)
 	{
-		free_token(mini); /* a free correctement */
+		free_lexer(mini);
+		printf("Malloc error during parsing\n");
 		return (1);
 	}
 	token->etat = -1;
 	token->arg = ft_calloc(max - start + 1, sizeof(char));
 	if (token->arg == NULL)
 	{
-		free_token(mini); /* a free correctement */
+		free_lexer(mini);
+		printf("Malloc error during parsing\n");
 		return (1);
 	}
 	while (start < max)
@@ -161,11 +165,6 @@ int	start_token(char *line, t_mini *mini)
 	while (line[i])
 	{
 		skip_isspace(line, &i, &prev);
-		/*if (line[i] == '|' && double_quote == 0 && single_quote == 0)
-		{
-			printf("Parse error near \"|\"\n");
-			return (1);
-		}*/
 		while (line[i])
 		{
 			if (line[i] == 34 && single_quote == 0)

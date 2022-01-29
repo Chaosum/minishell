@@ -3,217 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/27 19:19:04 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:09:49 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_lst_size_exec(t_exec	*exec)
+void	multiple_command_case(t_mini *mini, int command_number)
 {
+	int		pipe_fd[2048];
+	pid_t	pid[1024];
+	int		i;
 	t_exec	*temp;
-	int		i;
 
 	i = 0;
-	if (exec)
+	temp = mini->exec;
+	init_pipe_tab(pipe_fd, command_number, pid);
+	while (i < command_number)
 	{
-		temp = exec;
-		while (temp)
+		if (pipe(&pipe_fd[i * 2]) < 0)
 		{
-			temp = temp->next;
-			i++;
-		}
-	}
-	return (i);
-}
-
-int	check_built_in(char *cmd)
-{
-	if (ft_strncmp(cmd, "echo", 5) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "pwd", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "env", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "exit", 5) == 0)
-		return (1);
-	return (0);
-}
-
-void	exec_built_in(t_mini *mini, char *cmd)
-{
-	if (ft_strncmp(cmd, "echo", 5) == 0)
-		ft_echo(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "cd", 3) == 0)
-		ft_cd(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "pwd", 4) == 0)
-		ft_pwd(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "env", 4) == 0)
-		ft_env(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "export", 7) == 0)
-		ft_export(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "unset", 6) == 0)
-		ft_unset(mini, mini->exec->arg);
-	else if (ft_strncmp(cmd, "exit", 5) == 0)
-		ft_exit(mini, mini->exec->arg);
-}
-
-char	*define_command_path(char *path, char *command)
-{
-	char	*dest;
-	int		i;
-	int		j;
-
-	dest = ft_calloc(ft_strlen(path) + ft_strlen(command) + 2, sizeof(char));
-	i = 0;
-	j = 0;
-	if (dest == NULL)
-		return (NULL);
-	while (path[i])
-	{
-		dest[j] = path[i];
-		j++;
-		i++;
-	}
-	dest[j++] = '/';
-	i = 0;
-	while (command[i] != 0)
-	{
-		dest[j] = command[i];
-		j++;
-		i++;
-	}
-	return (dest);
-}
-
-char	**define_env_path(t_mini *mini)
-{
-	t_env	*temp;
-	char	**dest;
-
-	temp = get_env_var("PATH=", mini);
-	if (temp == NULL || temp->value == NULL)
-		return (NULL);
-	dest = ft_split(&temp->value[5], ':');
-	if (dest == NULL)
-		return (NULL);
-	return (dest);
-}
-
-int	fork_execve_define_path(t_mini *mini, t_exec *temp, char **args)
-{
-	int		i;
-	char	*command_path;
-	char	**path;
-
-	path = NULL;
-	i = 0;
-	if (ft_strncmp(args[0], "/", 1) == 0
-		|| ft_strncmp(args[0], "./", 2) == 0)
-		execve(args[0], args, NULL);
-	else
-	{
-		path = define_env_path(mini);
-		if (path)
-		{
-			while (path[i])
-			{
-				command_path = define_command_path(path[i], args[0]);
-				execve(command_path, args, NULL);
-				i++;
-				free(command_path);
-			}
-		}
-	}
-	temp->return_value = 1;
-	if (path)
-		ft_free_tab(path);
-	if (args)
-		ft_free_tab(args);
-	write(2, "Wrong command path\n", 20);
-	free_lst_exec(mini);
-	clear_history();
-	exit (1);
-}
-
-void	setup_redir(t_mini *mini, t_exec *temp)
-{
-	t_redir	*temp_redir;
-
-	temp_redir = temp->redir;
-	while (temp_redir)
-	{
-		if (ft_strncmp(temp_redir->type, "<<", 3) == 0)
-			ft_heredoc(mini, temp, temp_redir);
-		else if (ft_strncmp(temp_redir->type, "<", 2) == 0)
-			ft_redir_infile(temp, temp_redir);
-		else if (ft_strncmp(temp_redir->type, ">", 2) == 0)
-			ft_redir_outfile(temp, temp_redir, 0);
-		else if (ft_strncmp(temp_redir->type, ">>", 3) == 0)
-			ft_redir_outfile(temp, temp_redir, 1);
-		if (temp->heredoc_error)
+			write(2, "Pipe, memory issue\n", 14);
+			ft_free_pipe_tab(pipe_fd, i);
 			return ;
-		temp_redir = temp_redir->next;
+		}
+		i++;
 	}
-}
-
-void	ft_free_env(t_mini *mini)
-{
-	t_env	*temp;
-
-	while (mini->env)
+	i = 0;
+	signal(SIGINT, SIG_IGN);
+	while (i < command_number)
 	{
-		free(mini->env->value);
-		temp = mini->env->next;
-		free(mini->env);
-		mini->env = temp;
+		pid[i] = fork();
+		if (pid[i] < 0)
+		{
+			write(2, "memory issue\n", 14);
+			ft_free_pipe_tab(pipe_fd, command_number);
+			return ;
+		}
+		if (pid[i] == 0)
+		{
+			signal(SIGQUIT, SIG_DFL);
+			signal(SIGINT, SIG_DFL);
+			if (i == 0)
+				dup2(mini->exec->infile_fd, 0);
+			else
+				dup2(pipe_fd[(i - 1) * 2], 0);
+			if (i == command_number - 1)
+				dup2(mini->exec->outfile_fd, 1);
+			else
+				dup2(pipe_fd[i * 2 + 1], 1);
+			ft_free_pipe_tab(pipe_fd, command_number);
+			execute_pipe_command(mini, temp);
+		}
+		temp = temp->next;
+		i++;
 	}
+	ft_free_pipe_tab(pipe_fd, command_number);
+	signal(SIGINT, &sigint_handler_cat);
+	signal(SIGQUIT, &sigint_handler_quit);
+	ft_wait_fork(pid, command_number);
+	return ;
 }
 
-void	free_lst_exec(t_mini *mini)
+void	single_command_case(t_mini *mini)
 {
 	t_exec	*temp;
-	t_arg	*temp2;
-	t_redir	*temp3;
 
-	while (mini->exec)
+	temp = mini->exec;
+	if (mini->exec->redir)
+		setup_redir(mini, temp);
+	if (temp->heredoc_error == 0)
 	{
-		temp = mini->exec->next;
-		temp2 = mini->exec->arg;
-		temp3 = mini->exec->redir;
-		while (temp2)
-		{
-			free(temp2->content);
-			temp2 = temp2->next;
-			free(mini->exec->arg);
-			mini->exec->arg = temp2;
-		}
-		while (temp3)
-		{
-			free(temp3->file);
-			free(temp3->type);
-			temp3 = temp3->next;
-			free(mini->exec->redir);
-			mini->exec->redir = temp3;
-		}
-		if (mini->exec->heredoc)
-			free(mini->exec->heredoc);
-		if (mini->exec->infile_fd != 0 && mini->exec->infile_fd != 1)
-			close(mini->exec->infile_fd);
-		if (mini->exec->outfile_fd != 1 && mini->exec->outfile_fd != 0)
-			close(mini->exec->outfile_fd);
-		free(mini->exec);
-		mini->exec = temp;
+		execute_single_command(mini);
+		mini->last_return_value = mini->exec->return_value;
 	}
+	else
+		return ;
+	return ;
 }
 
 void	ft_execution(t_mini *mini)

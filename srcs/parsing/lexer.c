@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/27 15:02:36 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:58:19 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,7 @@ void	print_token(t_mini *mini)
 int	purge_token(t_mini *mini)
 {
 	t_token	*temp;
-	int		i;
 
-	i = 0;
 	temp = mini->token;
 	while (temp)
 	{
@@ -160,6 +158,9 @@ int	parse_token(t_mini *mini)
 		}
 		else if (temp->etat != is_pipe)
 			temp->etat = litteral;
+		else if (temp->etat == is_pipe)
+			if (temp->next == NULL || temp->next->etat == is_pipe)
+				return (1);
 		temp = temp->next;
 	}
 	return (0);
@@ -309,11 +310,18 @@ int	lexer(t_mini *mini)
 	ret = 0;
 	if (temp)
 	{
+		print_token(mini);//
 		purge_token(mini);
-		print_token(mini);//
-		parse_token(mini);
-		print_token(mini);//
-		ret = lexer_exec(mini);
+		if (parse_token(mini) == 0)
+		{
+			print_token(mini);//
+			ret = lexer_exec(mini);
+		}
+		else
+		{
+			printf("Parse error near |\n");
+			ret = 1;
+		}
 		free_lexer(mini);
 	}
 	return (ret);

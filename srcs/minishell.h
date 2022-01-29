@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/25 13:46:35 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/29 15:46:36 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,17 @@
 # include "./exec/exec.h"
 # include "./built_in/built_in.h"
 # include "./parsing/parsing.h"
+# include "./signals/signals.h"
+
+/* env.c */
+
+void	ft_free_env(t_mini *mini);
+int		init_mini_struct_env(t_mini *mini, char **env);
+void	init_mini_struct(t_mini *mini, char **env);
+int		init_shell_level(t_mini *mini);
 
 /* minishell.c */
 
-int		init_mini_struct_env(t_mini *mini, char **env);
-void	init_mini_struct(t_mini *mini, char **env);
-void	main_mini_temp(t_mini *mini);
-int		init_shell_level(t_mini *mini);
-void	sigint_handler(int signum);
 int		main(int ac, char **av, char **env);
 
 #endif

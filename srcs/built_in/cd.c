@@ -3,53 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/27 14:55:45 by mservage         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:02:03 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	t_arg_number_content(t_arg *temp)
-{
-	int	i;
-
-	i = 0;
-	while (temp && temp->content)
-	{
-		temp = temp->next;
-		i++;
-	}	
-	return (i);
-}
-
-char	**ft_lstarg_in_tab(t_arg *prms)
-{
-	char	**dest;
-	int		i;
-	t_arg	*temp;
-
-	temp = prms;
-	i = t_arg_number_content(prms);
-	dest = ft_calloc(sizeof(char *), i + 1);
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (temp && temp->content)
-	{
-		dest[i] = ft_strdup(temp->content);
-		if (dest[i] == NULL)
-		{
-			ft_free_tab(dest);
-			return (NULL);
-		}
-		temp = temp->next;
-		i++;
-	}
-	return (dest);
-}
 
 void	change_oldpwd(t_mini *mini, char *old_path)
 {

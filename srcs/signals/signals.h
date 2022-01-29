@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_tab.c                                     :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/20 17:35:50 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/29 15:20:54 by matthieu         ###   ########.fr       */
+/*   Created: 2022/01/29 15:31:51 by matthieu          #+#    #+#             */
+/*   Updated: 2022/01/29 16:31:54 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-void	ft_print_tab(char **tab)
-{
-	int	i;
+/* signals.c */
 
-	i = 0;
-	while (tab[i])
-	{
-		printf("%d |%s\n",i ,tab[i]);
-		i++;
-	}
-	return ;
-}
+void	sigint_handler_cat(int signum);
+void	sigint_handler_quit(int signum);
+void	sigint_handler(int signum);
+void	sigint_handler_heredoc(int signum);
+
+#endif
