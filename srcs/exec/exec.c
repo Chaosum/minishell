@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/29 16:09:49 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:56:06 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,51 +21,23 @@ void	multiple_command_case(t_mini *mini, int command_number)
 
 	i = 0;
 	temp = mini->exec;
-	init_pipe_tab(pipe_fd, command_number, pid);
-	while (i < command_number)
-	{
-		if (pipe(&pipe_fd[i * 2]) < 0)
-		{
-			write(2, "Pipe, memory issue\n", 14);
-			ft_free_pipe_tab(pipe_fd, i);
-			return ;
-		}
-		i++;
-	}
-	i = 0;
-	signal(SIGINT, SIG_IGN);
+	if (init_pipe_tab(pipe_fd, command_number, pid))
+		return ;
 	while (i < command_number)
 	{
 		pid[i] = fork();
-		if (pid[i] < 0)
-		{
-			write(2, "memory issue\n", 14);
-			ft_free_pipe_tab(pipe_fd, command_number);
+		if (pid_fork_error(pid, i, pipe_fd, command_number))
 			return ;
-		}
 		if (pid[i] == 0)
 		{
-			signal(SIGQUIT, SIG_DFL);
-			signal(SIGINT, SIG_DFL);
-			if (i == 0)
-				dup2(mini->exec->infile_fd, 0);
-			else
-				dup2(pipe_fd[(i - 1) * 2], 0);
-			if (i == command_number - 1)
-				dup2(mini->exec->outfile_fd, 1);
-			else
-				dup2(pipe_fd[i * 2 + 1], 1);
-			ft_free_pipe_tab(pipe_fd, command_number);
+			pipe_execve_fork(mini, pipe_fd, i, command_number);
 			execute_pipe_command(mini, temp);
 		}
 		temp = temp->next;
 		i++;
 	}
-	ft_free_pipe_tab(pipe_fd, command_number);
-	signal(SIGINT, &sigint_handler_cat);
-	signal(SIGQUIT, &sigint_handler_quit);
+	ft_free_pipe_tab(pipe_fd, command_number, 0);
 	ft_wait_fork(pid, command_number);
-	return ;
 }
 
 void	single_command_case(t_mini *mini)
@@ -95,7 +67,10 @@ void	ft_execution(t_mini *mini)
 	else if (command_number == 1)
 		single_command_case(mini);
 	else if (command_number > 1)
+	{
+		signal(SIGINT, SIG_IGN);
 		multiple_command_case(mini, command_number);
+	}
 	free_lst_exec(mini);
 	return ;
 }

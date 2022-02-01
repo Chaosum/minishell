@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_tab.c                                     :+:      :+:    :+:   */
+/*   free_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/20 17:35:50 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/01 01:06:36 by matthieu         ###   ########.fr       */
+/*   Created: 2022/01/31 15:37:55 by matthieu          #+#    #+#             */
+/*   Updated: 2022/01/31 15:39:16 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_print_tab(char **tab)
+int	token_malloc_error(t_mini *mini, int ret_value)
 {
-	int	i;
+	free_lexer(mini);
+	printf("Malloc error during parsing\n");
+	return (ret_value);
+}
 
-	i = 0;
-	while (tab[i])
+void	free_lexer(t_mini *mini)
+{
+	t_token	*temp;
+
+	temp = mini->token;
+	if (mini->token)
 	{
-		printf("%d |%s\n", i, tab[i]);
-		i++;
+		while (temp)
+		{
+			if (temp->arg)
+				free(temp->arg);
+			temp = temp->next;
+			free(mini->token);
+			mini->token = temp;
+		}
+		free(mini->token);
 	}
-	return ;
 }

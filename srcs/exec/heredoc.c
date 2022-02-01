@@ -6,13 +6,13 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:23:56 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/29 16:44:38 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/31 21:54:07 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	heredoc_pipe(t_redir *temp_redir, int fd[2])
+void	heredoc_pipe(t_redir *t, int fd[2])
 {
 	char	*line;
 	char	*temp;
@@ -24,12 +24,10 @@ void	heredoc_pipe(t_redir *temp_redir, int fd[2])
 		line = readline("heredoc> ");
 		if (line == NULL)
 		{
-			printf("Warning heredoc ended with EOF instead of %s\n",
-				temp_redir->file);
+			printf("Warning heredoc ended with EOF instead of %s\n", t->file);
 			break ;
 		}
-		if (ft_strncmp(line, temp_redir->file,
-				ft_strlen(temp_redir->file)) == 0)
+		if (ft_strncmp(line, t->file, ft_strlen(t->file)) == 0)
 			break ;
 		temp = ft_strjoin(input, line);
 		free(line);
@@ -42,25 +40,27 @@ void	heredoc_pipe(t_redir *temp_redir, int fd[2])
 	free(line);
 }
 
-
-
-void	free_mini_heredoc(t_mini *mini)
-{
-	if (mini->exec)
-	{
-		free_lst_exec(mini);
-	}
-}
-
 void	heredoc_fork(t_mini *mini, int fd[2], t_redir *temp_redir)
 {
 	signal(SIGINT, &sigint_handler_heredoc);
 	heredoc_pipe(temp_redir, fd);
 	close(fd[0]);
 	close(fd[1]);
-	free_mini_heredoc(mini);
+	free_lst_exec(mini);
 	exit(0);
 	return ;
+}
+
+void	heredoc_end(t_mini *mini, t_exec *temp_exec, int fd[2])
+{
+	if (temp_exec->heredoc == NULL)
+		temp_exec->heredoc = ft_strdup("");
+	if (mini->last_return_value)
+		temp_exec->heredoc_error = 1;
+	close(fd[0]);
+	close(fd[1]);
+	temp_exec->index.heredoc = 1;
+	temp_exec->index.infile = 0;
 }
 
 void	ft_heredoc(t_mini *mini, t_exec *temp_exec, t_redir *temp_redir)
@@ -87,12 +87,5 @@ void	ft_heredoc(t_mini *mini, t_exec *temp_exec, t_redir *temp_redir)
 		free(temp);
 		read(fd[0], buf, 1);
 	}
-	if (temp_exec->heredoc == NULL)
-		temp_exec->heredoc = ft_strdup("");
-	if (mini->last_return_value)
-		temp_exec->heredoc_error = 1;
-	close(fd[0]);
-	close(fd[1]);
-	temp_exec->index.heredoc = 1;
-	temp_exec->index.infile = 0;
+	heredoc_end(mini, temp_exec, fd);
 }

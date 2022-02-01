@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/29 15:46:36 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:53:13 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 void	ft_free_env(t_mini *mini);
 int		init_mini_struct_env(t_mini *mini, char **env);
-void	init_mini_struct(t_mini *mini, char **env);
+int		init_mini_struct(t_mini *mini, char **env);
 int		init_shell_level(t_mini *mini);
 
 /* minishell.c */

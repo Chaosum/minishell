@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 09:06:28 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/25 17:28:06 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:57:00 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,22 @@ typedef struct s_token
 	int				etat;
 	struct s_token	*next;
 }			t_token;
+
+typedef struct s_token_var
+{
+	int		i;
+	int		prev;
+	int		single_quote;
+	int		double_quote;
+}			t_token_var;
+
+typedef struct s_lexer_var
+{
+	int		i;
+	int		j;
+	char	*dest;
+	char	*replace_temp;
+}			t_lexer_var;
 
 typedef struct s_mini
 {

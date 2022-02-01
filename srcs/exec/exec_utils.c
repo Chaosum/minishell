@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:08:30 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/29 16:12:49 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/01/31 20:47:33 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	init_pipe_tab(int *pipe_fd, int command_number, pid_t *pid)
 	i = 0;
 	while (i < command_number)
 		pid[i++] = 0;
+	if (verif_pipe_tab(command_number, pipe_fd))
+		return (1);
 	return (0);
 }
 

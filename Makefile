@@ -12,7 +12,9 @@ FOLDER_BUILT_IN		= srcs/built_in
 
 SRCS				= ${addprefix ${FOLDER_SRCS}/, minishell.c env.c}
 
-SRCS_PARSING		= ${addprefix ${FOLDER_PARSING}/, lexer.c parsing_utils.c parsing.c tokenizer.c}
+SRCS_PARSING		= ${addprefix ${FOLDER_PARSING}/, tokenizer.c token_redir_state.c \
+						parsing.c parsing_utils.c parsing_utils_bis.c parsing_utils_re_bis.c \
+						lexer.c lexer_bis.c lexer_re_bis.c free_parsing.c create_token.c}
 
 SRCS_UTILS			= ${addprefix ${FOLDER_UTILS}/, global_utils.c \
 						ft_lstadd_back.c ft_lstadd_front.c first_memory_utils.c}
