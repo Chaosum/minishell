@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/01 01:18:52 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 04:12:45 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	exec_built_in(t_mini *mini, char *cmd);
 
 /* exec_pipe.c */
 int		verif_pipe_tab(int command_number, int *pipe_fd);
-void	pipe_execve_fork(t_mini *mini, int *pipe_fd, int i, int command_number);
+void	pipe_execve_fork(t_exec *temp, int *pipe_fd, int i, int command_number);
 int		pid_fork_error(pid_t *pid, int i, int *pipe_fd, int command_number);
 int		execute_pipe_command(t_mini *mini, t_exec *temp);
 void	ft_wait_fork(pid_t *pid, int cmd_nbr);
@@ -42,7 +42,7 @@ char	**ft_lstarg_in_tab(t_arg *prms);
 int		ft_lst_size_exec(t_exec	*exec);
 
 /* exec.c */
-void	multiple_command_case(t_mini *mini, int command_number);
+void	multiple_command_case(t_mini *mini, int command_number, int i);
 void	single_command_case(t_mini *mini);
 void	ft_execution(t_mini *mini);
 

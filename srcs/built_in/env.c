@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:50 by mservage          #+#    #+#             */
-/*   Updated: 2021/10/19 19:21:17 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 04:34:07 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_env(t_mini *mini, t_arg *prms)
 		return ;
 	}
 	ft_print_env(mini->env, mini);
+	ft_free_tab(args);
 	mini->exec->return_value = 0;
 	return ;
 }

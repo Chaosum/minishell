@@ -6,20 +6,18 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/31 20:56:06 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 04:26:01 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	multiple_command_case(t_mini *mini, int command_number)
+void	multiple_command_case(t_mini *mini, int command_number, int i)
 {
 	int		pipe_fd[2048];
 	pid_t	pid[1024];
-	int		i;
 	t_exec	*temp;
 
-	i = 0;
 	temp = mini->exec;
 	if (init_pipe_tab(pipe_fd, command_number, pid))
 		return ;
@@ -30,7 +28,9 @@ void	multiple_command_case(t_mini *mini, int command_number)
 			return ;
 		if (pid[i] == 0)
 		{
-			pipe_execve_fork(mini, pipe_fd, i, command_number);
+			if (temp->redir)
+				setup_redir(mini, temp);
+			pipe_execve_fork(temp, pipe_fd, i, command_number);
 			execute_pipe_command(mini, temp);
 		}
 		temp = temp->next;
@@ -69,7 +69,7 @@ void	ft_execution(t_mini *mini)
 	else if (command_number > 1)
 	{
 		signal(SIGINT, SIG_IGN);
-		multiple_command_case(mini, command_number);
+		multiple_command_case(mini, command_number, 0);
 	}
 	free_lst_exec(mini);
 	return ;
