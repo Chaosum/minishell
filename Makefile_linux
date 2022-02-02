@@ -42,15 +42,15 @@ NAME				= minishell
 
 CC					= gcc
 
-CFLAGS				= -Wall -Wextra -Werror #-g3 -fsanitize=address 
+CFLAGS				= -g3 -fsanitize=address -Wall -Wextra -Werror
 
 all:		MAKELIBFT ${NAME}
 
 %.o:		%.c
-			${CC} ${CFLAGS} -I${shell brew --prefix readline}/include -o $@ -c $<
+			${CC} ${CFLAGS} -o $@ -c $<
 
 ${NAME}:	${OBJS}
-				gcc ${CFLAGS} -o ${NAME} ${OBJS} ./libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline
+				gcc ${CFLAGS} -o ${NAME} ${OBJS} ./libft/libft.a -lreadline
 				@echo compilation complete !
 			
 
@@ -61,7 +61,7 @@ MAKELIBFT:
 
 clean:
 			@rm -f *.o ${FOLDER_SRCS}/*.o ${FOLDER_UTILS}/*.o ${FOLDER_EXEC}/*.o \
-				${FOLDER_BUILT_IN}/*.o ${FOLDER_PARSING}/*.o
+				${FOLDER_BUILT_IN}/*.o ${FOLDER_PARSING}/*.o ${FOLDER_SIGNALS}/*.o
 			@echo files cleaned !
 			@make clean -C ./libft
 

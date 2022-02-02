@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/31 14:57:26 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:51:43 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ void	free_all_main(t_mini *mini)
 	rl_clear_history();
 	ft_free_env(mini);
 	free_lst_exec(mini);
+}
+
+void	free_all_main_d(t_mini *mini)
+{
+	rl_clear_history();
+	ft_free_env(mini);
+	free_lst_exec(mini);
+	printf("exit\n");
+	exit (0);
 }
 
 int	main(int ac, char **av, char **env)
@@ -42,7 +51,7 @@ int	main(int ac, char **av, char **env)
 				free(line);
 			}
 			else
-				exit(130);
+				free_all_main_d(&mini);
 		}
 		free_all_main(&mini);
 	}

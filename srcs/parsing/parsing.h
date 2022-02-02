@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:27:06 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/01 02:21:13 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:14:13 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		is_redir(int double_quote, int single_quote, int i, char *line);
 void	init_t_token(t_token_var *var);
 
 /* parsing_utils_re_bis.c */
+char	*return_value_case(t_mini *mini, int *i);
 char	*get_env_value(t_env *env);
 char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j);
 void	print_token(t_mini *mini);

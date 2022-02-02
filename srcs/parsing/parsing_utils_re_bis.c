@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_re_bis.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 16:03:55 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/31 16:07:09 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:13:48 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,23 @@ char	*get_env_value(t_env *env)
 	int	i;
 
 	i = 0;
-	while (env->value[i] != '=' && env->value[i])
+	if (env)
+	{
+		while (env->value[i] != '=' && env->value[i])
+			i++;
 		i++;
-	return (&env->value[i]);
+		return (&env->value[i]);
+	}
+	return (NULL);
+}
+
+char	*return_value_case(t_mini *mini, int *i)
+{
+	char	*env;
+
+	env = ft_itoa(mini->last_return_value);
+	*i = *i + 1;
+	return (env);
 }
 
 char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
@@ -30,22 +44,23 @@ char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
 
 	k = *i;
 	if (temp->arg[*i] == '?')
-	{
-		env = ft_itoa(mini->last_return_value);
-		*i = *i + 1;
-		return (env);
-	}
-	while (temp->arg[k] && ft_isalnum(temp->arg[k]))
+		return (return_value_case(mini, i));
+	while (temp->arg[k] && (ft_isalnum(temp->arg[k]) && temp->arg[k] != '_'))
 		k++;
-	env = ft_calloc(k + 1 - *i, sizeof(char));
+	env = ft_calloc(k + 1, sizeof(char));
 	k = 0;
-	while (temp->arg[*i] && ft_isalnum(temp->arg[*i]))
+	while (temp->arg[*i] && (ft_isalnum(temp->arg[*i]) && temp->arg[k] != '_'))
 	{
 		env[k] = temp->arg[*i];
 		*i = *i + 1;
 		k++;
 	}
 	temp_env = get_env_var(env, mini);
+	if (temp_env == NULL)
+	{
+		*j = *j + 1;
+		return ("");
+	}
 	*j = *j + ft_strlen(get_env_value(temp_env));
 	return (get_env_value(temp_env));
 }

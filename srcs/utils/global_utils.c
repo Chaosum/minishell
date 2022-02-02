@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:09:03 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/27 14:54:36 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:48:58 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,27 @@ int	ft_tab_size(char **tab)
 	return (i);
 }
 
+int	cmp_equa(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	if (s1 && s2)
+	{
+		while (s1[i] && s2[i] && s2[i] != '=')
+		{
+			if (s1[i] - s2[i])
+				return (1);
+			i++;
+		}
+		if (s2[i] == '=' && !s1[i])
+			return (0);
+		else
+			return (1);
+	}
+	return (1);
+}
+
 t_env	*get_env_var(char *get, t_mini *mini)
 {
 	t_env	*temp;
@@ -32,11 +53,13 @@ t_env	*get_env_var(char *get, t_mini *mini)
 	temp = mini->env;
 	while (temp)
 	{
-		if (!ft_strncmp(get, temp->value, ft_strlen(get)))
-			break ;
+		if (!cmp_equa(get, temp->value))
+		{
+			return (temp);
+		}
 		temp = temp->next;
 	}
-	return (temp);
+	return (NULL);
 }
 
 void	ft_add_env_var(char *value, t_mini *mini)
@@ -44,11 +67,7 @@ void	ft_add_env_var(char *value, t_mini *mini)
 	t_env	*temp;
 
 	temp = ft_calloc(1, sizeof(t_env));
-	if (temp == NULL)
-		exit(666);
 	temp->value = ft_strdup(value);
-	if (temp->value == NULL)
-		exit(666);
 	ft_lstadd_back_env(&mini->env, temp);
 }
 
@@ -61,8 +80,6 @@ void	change_env_var_value(t_env *var, char *content)
 	while (var->value[i] != '=' && var->value[i])
 		i++;
 	temp = ft_calloc(i + ft_strlen(content) + 1, sizeof(char));
-	if (temp == NULL)
-		exit(666);
 	i = 0;
 	while (var->value[i] != '=' && var->value[i])
 	{

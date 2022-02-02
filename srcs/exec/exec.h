@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:31 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 04:12:45 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:03:52 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		verif_pipe_tab(int command_number, int *pipe_fd);
 void	pipe_execve_fork(t_exec *temp, int *pipe_fd, int i, int command_number);
 int		pid_fork_error(pid_t *pid, int i, int *pipe_fd, int command_number);
 int		execute_pipe_command(t_mini *mini, t_exec *temp);
-void	ft_wait_fork(pid_t *pid, int cmd_nbr);
+void	ft_wait_fork(t_mini *mini, pid_t *pid, int cmd_nbr);
 
 /* exec_single_command.c */
 void	exec_single_case_function_fork(t_mini *mini, t_exec *temp,

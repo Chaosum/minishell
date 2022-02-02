@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:26:02 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/01/31 15:39:11 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:12:02 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,30 @@ int	create_token(t_mini *mini, char *line, int start, int max)
 	return (0);
 }
 
-int	tokenizer(char *line, t_mini *mini, t_token_var *var)
+int	tokenizer(char *line, t_mini *mini, t_token_var *v)
 {
-	while (line[var->i])
+	if (line[v->i] == '$' && (line[v->i + 1] == 34 || line[v->i + 1] == 39))
+		v->prev = v->i++ + 1;
+	while (line[v->i])
 	{
-		if (line[var->i] == 34 && var->single_quote == 0)
-			var->double_quote = !var->double_quote;
-		else if (line[var->i] == 39 && var->double_quote == 0)
-			var->single_quote = !var->single_quote;
-		if (is_redir(var->double_quote, var->single_quote, var->i, line))
+		if (line[v->i] == 34 && v->single_quote == 0)
+			v->double_quote = !v->double_quote;
+		else if (line[v->i] == 39 && v->double_quote == 0)
+			v->single_quote = !v->single_quote;
+		if (is_redir(v->double_quote, v->single_quote, v->i, line))
 		{
-			if (create_redir_token(mini, line, &var->i))
+			if (create_redir_token(mini, line, &v->i))
 				return (1);
 			break ;
 		}
-		else if (is_token(var->double_quote, var->single_quote, var->i, line))
+		else if (is_token(v->double_quote, v->single_quote, v->i, line))
 		{
-			if (create_token(mini, line, var->prev, var->i + 1))
+			if (create_token(mini, line, v->prev, v->i + 1))
 				return (1);
-			var->i++;
+			v->i++;
 			break ;
 		}
-		var->i++;
+		v->i++;
 	}
 	return (0);
 }

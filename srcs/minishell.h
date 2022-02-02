@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:38 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/31 14:53:13 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:50:17 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int		init_shell_level(t_mini *mini);
 
 /* minishell.c */
 
+void	free_all_main_d(t_mini *mini);
+void	free_all_main(t_mini *mini);
 int		main(int ac, char **av, char **env);
 
 #endif

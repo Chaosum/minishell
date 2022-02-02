@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 04:26:01 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:02:23 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	multiple_command_case(t_mini *mini, int command_number, int i)
 		i++;
 	}
 	ft_free_pipe_tab(pipe_fd, command_number, 0);
-	ft_wait_fork(pid, command_number);
+	ft_wait_fork(mini, pid, command_number);
 }
 
 void	single_command_case(t_mini *mini)
@@ -50,7 +50,7 @@ void	single_command_case(t_mini *mini)
 	if (temp->heredoc_error == 0)
 	{
 		execute_single_command(mini);
-		mini->last_return_value = mini->exec->return_value;
+		mini->last_return_value = mini->exec->return_value % 255;
 	}
 	else
 		return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 04:31:39 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:13:26 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,15 @@ int	execute_pipe_command(t_mini *mini, t_exec *temp)
 	return (1);
 }
 
-void	ft_wait_fork(pid_t *pid, int cmd_nbr)
+void	ft_wait_fork(t_mini *mini, pid_t *pid, int cmd_nbr)
 {
 	int	i;
-	int	wstatus;
 
 	i = 0;
 	while (i < cmd_nbr)
 	{
-		waitpid(pid[i], &wstatus, 0);
+		waitpid(pid[i], &mini->last_return_value, 0);
+		mini->last_return_value = mini->last_return_value % 255;
 		i++;
 	}
 }

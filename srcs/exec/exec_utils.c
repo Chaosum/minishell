@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 16:08:30 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/31 20:47:33 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:52:21 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**define_env_path(t_mini *mini)
 	t_env	*temp;
 	char	**dest;
 
-	temp = get_env_var("PATH=", mini);
+	temp = get_env_var("PATH", mini);
 	if (temp == NULL || temp->value == NULL)
 		return (NULL);
 	dest = ft_split(&temp->value[5], ':');

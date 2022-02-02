@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:37:10 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/01 01:07:34 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:52:47 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	init_shell_level(t_mini *mini)
 	int		value;
 	char	*content;
 
-	temp = get_env_var("SHLVL=", mini);
+	temp = get_env_var("SHLVL", mini);
 	if (temp == NULL)
 		ft_add_env_var("SHLVL=1", mini);
 	else

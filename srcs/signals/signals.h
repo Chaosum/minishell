@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:31:51 by matthieu          #+#    #+#             */
-/*   Updated: 2022/01/29 16:31:54 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:18:01 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SIGNALS_H
 # define SIGNALS_H
+
+# include "../minishell.h"
 
 /* signals.c */
 

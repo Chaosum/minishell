@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/01 01:47:20 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:52:12 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	parse_token(t_mini *mini)
 
 int	replace_braces(t_token *temp, t_mini *mini, t_lexer_var	v)
 {
-	init_var_lexer(&v);
 	v.dest = ft_calloc(ft_strlen(temp->arg) + 1, sizeof(char));
 	if (v.dest == NULL)
 		return (printf("malloc error\n"));
@@ -46,7 +45,8 @@ int	replace_braces(t_token *temp, t_mini *mini, t_lexer_var	v)
 			temp->double_quote = !temp->double_quote;
 		else if (temp->arg[v.i] == 39 && temp->double_quote == 0)
 			temp->single_quote = !temp->single_quote;
-		else if (temp->single_quote == 0 && temp->arg[v.i] == '$')
+		else if (temp->single_quote == 0 && temp->arg[v.i] == '$'
+			&& ft_strlen(temp->arg) > 1)
 		{
 			v.i++;
 			v.replace_temp = replace_by_env(mini, temp, &v.i, &v.j);
@@ -70,6 +70,7 @@ int	purge_token(t_mini *mini)
 	temp = mini->token;
 	while (temp)
 	{
+		init_var_lexer(&v);
 		if (replace_braces(temp, mini, v))
 			return (1);
 		temp = temp->next;
@@ -86,10 +87,8 @@ int	lexer(t_mini *mini)
 	ret = 0;
 	if (temp)
 	{
-		print_token(mini);
 		if (purge_token(mini) == 0)
 		{
-			print_token(mini);
 			if (parse_token(mini) == 0)
 				ret = lexer_exec(mini);
 		}
