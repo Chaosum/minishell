@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2020/11/27 16:22:24 by mservage          #+#    #+#             */
+/*   Updated: 2021/04/29 14:53:56 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+char	*ft_strrchr(const char *s, int c)
 {
-	if (start_token(line, mini) == 0)
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	while (i > -1)
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		if (s[i] == ((char)c))
+			return ((char *)s + i);
+		i--;
 	}
+	return (NULL);
 }

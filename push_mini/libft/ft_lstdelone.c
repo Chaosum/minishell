@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2020/12/02 13:29:01 by mservage          #+#    #+#             */
+/*   Updated: 2020/12/02 13:29:15 by mservage         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
-	if (start_token(line, mini) == 0)
-	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
-	}
+	del(lst->content);
+	free(lst);
 }

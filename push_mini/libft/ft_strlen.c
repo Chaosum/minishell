@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2020/11/27 16:13:02 by mservage          #+#    #+#             */
+/*   Updated: 2021/12/08 01:33:29 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+size_t	ft_strlen(const char *s)
 {
-	if (start_token(line, mini) == 0)
+	size_t	i;
+
+	i = 0;
+	if (s)
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		while (s[i])
+			i++;
 	}
+	return (i);
 }

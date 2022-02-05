@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2020/11/27 15:25:36 by mservage          #+#    #+#             */
+/*   Updated: 2021/04/29 14:49:51 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	if (start_token(line, mini) == 0)
+	size_t	i;
+
+	i = 0;
+	while (i < len)
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		((unsigned char *)b)[i] = (unsigned char)c;
+		i++;
 	}
+	return (b);
 }

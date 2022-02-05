@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rjeannot <rjeannot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2020/11/27 14:27:54 by mservage          #+#    #+#             */
+/*   Updated: 2021/05/10 11:01:01 by rjeannot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+void	*ft_calloc(size_t count, size_t size)
 {
-	if (start_token(line, mini) == 0)
+	size_t	i;
+	void	*ptr;
+
+	i = 0;
+	ptr = malloc(size * count);
+	if (ptr == NULL)
+		return (NULL);
+	while (i < (size * count))
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		((unsigned char *)ptr)[i] = 0;
+		i++;
 	}
+	return (ptr);
 }

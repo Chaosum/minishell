@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_print_tab.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2021/07/20 17:35:50 by matthieu          #+#    #+#             */
+/*   Updated: 2022/02/01 01:06:36 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	parsing(t_mini *mini, char *line)
+void	ft_print_tab(char **tab)
 {
-	if (start_token(line, mini) == 0)
+	int	i;
+
+	i = 0;
+	while (tab[i])
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		printf("%d |%s\n", i, tab[i]);
+		i++;
 	}
+	return ;
 }

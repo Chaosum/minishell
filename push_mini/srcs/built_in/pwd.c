@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2021/09/23 01:25:43 by mservage          #+#    #+#             */
+/*   Updated: 2022/01/29 16:42:23 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	parsing(t_mini *mini, char *line)
+void	ft_pwd(t_mini *mini)
 {
-	if (start_token(line, mini) == 0)
-	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
-	}
+	char	path[PATH_MAX];
+
+	getcwd(path, PATH_MAX);
+	write(mini->exec->outfile_fd, path, ft_strlen(path));
+	printf("%s\n", path);
+	mini->exec->return_value = 0;
+	return ;
 }

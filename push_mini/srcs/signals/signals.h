@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2022/01/29 15:31:51 by matthieu          #+#    #+#             */
+/*   Updated: 2022/02/02 17:18:01 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-void	parsing(t_mini *mini, char *line)
-{
-	if (start_token(line, mini) == 0)
-	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
-	}
-}
+# include "../minishell.h"
+
+/* signals.c */
+
+void	sigint_handler_cat(int signum);
+void	sigint_handler_quit(int signum);
+void	sigint_handler(int signum);
+void	sigint_handler_heredoc(int signum);
+
+#endif

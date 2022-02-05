@@ -42,7 +42,7 @@ NAME				= minishell
 
 CC					= gcc
 
-CFLAGS				= -Wall -Wextra -Werror #-g3 -fsanitize=address 
+CFLAGS				= -Wall -Wextra -Werror -g3 -fsanitize=address 
 
 all:		MAKELIBFT ${NAME}
 

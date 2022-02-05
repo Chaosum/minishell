@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   get_next_line_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 17:25:46 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:49:05 by mservage         ###   ########.fr       */
+/*   Created: 2021/05/25 15:56:18 by mservage          #+#    #+#             */
+/*   Updated: 2021/05/25 15:56:36 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "get_next_line.h"
 
-void	parsing(t_mini *mini, char *line)
+t_line	*ft_free_struck(t_line *lst, t_line *temp)
 {
-	if (start_token(line, mini) == 0)
+	t_line	*temp2;
+
+	temp2 = lst;
+	if (temp == lst && lst)
+		lst = lst->next;
+	else if (lst && temp)
 	{
-		if (lexer(mini) == 0)
-			ft_execution(mini);
+		while (temp2->next != temp)
+			temp2 = temp2->next;
+		temp2->next = temp->next;
 	}
+	free(temp->stock);
+	free(temp);
+	return (lst);
 }
