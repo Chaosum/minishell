@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:26:27 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/29 16:42:33 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/03 12:43:14 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	ft_env(t_mini *mini, t_arg *prms);
 void	ft_print_env(t_env *env, t_mini *mini);
 
 /* exit.c */
-void	ft_exit_free_all(t_mini *mini, int exit_value);
+int		ft_atol(const char *str);
+void	ft_exit_free_all(t_mini *mini, int exit_value, char **args);
 void	ft_exit(t_mini *mini, t_arg *prms);
 
 /* export.c */

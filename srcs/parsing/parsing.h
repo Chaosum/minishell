@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 17:27:06 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 17:14:13 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:16:39 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_lstadd_back_redir(t_redir **alst, t_redir *new);
 void	ft_lstadd_back_arg(t_arg **alst, t_arg *new);
 
 /* parsing.c */
+char	*replace_by_env_ret(char *env, t_env *temp_env, int *j);
 void	parsing(t_mini *mini, char *line);
 
 /* token_redir_state.c */

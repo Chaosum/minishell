@@ -6,12 +6,14 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/31 13:39:04 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 16:51:43 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:11:30 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../libft/get_next_line.h"
+
+int	g_signal = 0;
 
 void	free_all_main(t_mini *mini)
 {

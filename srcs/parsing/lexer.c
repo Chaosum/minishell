@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 23:09:44 by rjeannot          #+#    #+#             */
-/*   Updated: 2022/02/02 16:52:12 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:34:54 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,26 @@ int	parse_token(t_mini *mini)
 	return (0);
 }
 
+void	add_char_dest(t_lexer_var *v, t_token *temp)
+{
+	int		i;
+	char	*dest;
+
+	i = 0;
+	dest = ft_calloc(ft_strlen(v->dest) + 2, sizeof(char));
+	while (v->dest[i])
+	{
+		dest[i] = v->dest[i];
+		i++;
+	}
+	dest[i] = temp->arg[v->i];
+	free(v->dest);
+	v->dest = dest;
+}
+
 int	replace_braces(t_token *temp, t_mini *mini, t_lexer_var	v)
 {
+	init_var_lexer(&v);
 	v.dest = ft_calloc(ft_strlen(temp->arg) + 1, sizeof(char));
 	if (v.dest == NULL)
 		return (printf("malloc error\n"));
@@ -54,7 +72,7 @@ int	replace_braces(t_token *temp, t_mini *mini, t_lexer_var	v)
 			v.i--;
 		}
 		else
-			v.dest[v.j++] = temp->arg[v.i];
+			add_char_dest(&v, temp);
 		v.i++;
 	}
 	free(temp->arg);

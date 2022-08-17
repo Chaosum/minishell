@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 01:25:54 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/29 16:02:03 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/03 13:34:09 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	change_oldpwd(t_mini *mini, char *old_path)
 	t_env	*temp;
 	char	path[PATH_MAX];
 
-	temp = get_env_var("OLDPWD=", mini);
+	temp = get_env_var("OLDPWD", mini);
 	if (temp == NULL)
 	{
-		ft_add_env_var("OLDPWD=", mini);
-		temp = get_env_var("OLDPWD=", mini);
+		ft_add_env_var("OLDPWD", mini);
+		temp = get_env_var("OLDPWD", mini);
 	}
 	if (old_path == NULL)
 		getcwd(path, PATH_MAX);
 	else
-		ft_strlcpy(path, old_path, ft_strlen(old_path));
+		ft_strlcpy(path, old_path, ft_strlen(old_path) + 1);
 	change_env_var_value(temp, path);
 }
 
@@ -34,7 +34,7 @@ void	change_pwd(t_mini *mini, char *path)
 {
 	t_env	*temp;
 
-	temp = get_env_var("PWD=", mini);
+	temp = get_env_var("PWD", mini);
 	chdir(path);
 	change_env_var_value(temp, path);
 	return ;
@@ -44,17 +44,17 @@ void	cd_no_arg(t_mini *mini)
 {
 	char	*path;
 
-	if (get_env_var("HOME=", mini) == NULL
-		|| get_env_var("HOME=", mini)->value == NULL)
+	if (get_env_var("HOME", mini) == NULL
+		|| get_env_var("HOME", mini)->value == NULL)
 	{
 		write(2, "cd: « HOME » non défini", 27);
 		mini->exec->return_value = 1;
 		return ;
 	}
-	path = &get_env_var("HOME=", mini)->value[6];
+	path = &get_env_var("HOME", mini)->value[6];
 	change_oldpwd(mini, NULL);
 	change_pwd(mini, path);
-	path = &get_env_var("PWD=", mini)->value[5];
+	path = &get_env_var("PWD", mini)->value[5];
 	mini->exec->return_value = chdir(path);
 	return ;
 }

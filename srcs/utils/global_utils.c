@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 15:09:03 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 16:48:58 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:24:35 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void	change_env_var_value(t_env *var, char *content)
 	i = 0;
 	while (var->value[i] != '=' && var->value[i])
 		i++;
-	temp = ft_calloc(i + ft_strlen(content) + 1, sizeof(char));
+	temp = ft_calloc(i + ft_strlen(content) + 2, sizeof(char));
+	if (temp == NULL)
+		return ;
 	i = 0;
 	while (var->value[i] != '=' && var->value[i])
 	{
@@ -87,7 +89,7 @@ void	change_env_var_value(t_env *var, char *content)
 		i++;
 	}
 	temp[i] = var->value[i];
-	ft_strlcat(temp, content, i + ft_strlen(content));
+	ft_strlcat(temp, content, i + ft_strlen(content) + 2);
 	free(var->value);
 	var->value = temp;
 }

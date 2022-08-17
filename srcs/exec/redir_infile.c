@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_infile.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 01:46:40 by mservage          #+#    #+#             */
-/*   Updated: 2022/01/29 16:15:44 by matthieu         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:22:22 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	ft_redir_infile(t_exec *exec, t_redir *temp_redir)
 	if (exec->outfile_fd != 1 && exec->outfile_fd != 0)
 		close(exec->infile_fd);
 	temp_redir->fd = open(temp_redir->file, O_RDONLY);
-	redir_check_opening_error(temp_redir);
+	if (redir_check_opening_error(temp_redir))
+		exec->heredoc_error = 1;
 	exec->index.infile = 1;
 	exec->index.heredoc = 0;
 	exec->infile_fd = temp_redir->fd;
@@ -44,7 +45,8 @@ void	ft_redir_outfile(t_exec *exec, t_redir *temp_redir, int append)
 	{
 		temp_redir->fd = open(temp_redir->file,
 				O_CREAT | O_WRONLY | O_TRUNC, 0777);
-		redir_check_opening_error(temp_redir);
+		if (redir_check_opening_error(temp_redir))
+			exec->heredoc_error = 1;
 		exec->index.outfile++;
 		exec->outfile_fd = temp_redir->fd;
 	}
@@ -53,7 +55,7 @@ void	ft_redir_outfile(t_exec *exec, t_redir *temp_redir, int append)
 		temp_redir->fd = open(temp_redir->file,
 				O_CREAT | O_WRONLY | O_APPEND, 0777);
 		if (redir_check_opening_error(temp_redir))
-			exit(666);
+			exec->heredoc_error = 1;
 		exec->index.outfile = 1;
 		exec->outfile_fd = temp_redir->fd;
 	}

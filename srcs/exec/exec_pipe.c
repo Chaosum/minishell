@@ -6,11 +6,13 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:33:15 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 17:13:26 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:11:09 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern int	g_signal;
 
 int	verif_pipe_tab(int command_number, int *pipe_fd)
 {
@@ -87,7 +89,10 @@ void	ft_wait_fork(t_mini *mini, pid_t *pid, int cmd_nbr)
 	while (i < cmd_nbr)
 	{
 		waitpid(pid[i], &mini->last_return_value, 0);
-		mini->last_return_value = mini->last_return_value % 255;
+		if (g_signal)
+			mini->last_return_value = mini->last_return_value % 256 + 128;
+		else
+			mini->last_return_value = mini->last_return_value % 256;
 		i++;
 	}
 }

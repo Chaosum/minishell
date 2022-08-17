@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:45:12 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 17:02:23 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 13:39:32 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	single_command_case(t_mini *mini)
 	if (temp->heredoc_error == 0)
 	{
 		execute_single_command(mini);
-		mini->last_return_value = mini->exec->return_value % 255;
+		mini->last_return_value = mini->exec->return_value % 256 + 128;
 	}
 	else
 		return ;

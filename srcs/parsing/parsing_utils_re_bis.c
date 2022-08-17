@@ -6,7 +6,7 @@
 /*   By: mservage <mservage@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 16:03:55 by matthieu          #+#    #+#             */
-/*   Updated: 2022/02/02 17:13:48 by mservage         ###   ########.fr       */
+/*   Updated: 2022/02/03 14:16:28 by mservage         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
 	k = 0;
 	while (temp->arg[*i] && (ft_isalnum(temp->arg[*i]) && temp->arg[k] != '_'))
 	{
-		env[k] = temp->arg[*i];
+		env[k++] = temp->arg[*i];
 		*i = *i + 1;
-		k++;
 	}
 	temp_env = get_env_var(env, mini);
 	if (temp_env == NULL)
@@ -61,8 +60,7 @@ char	*replace_by_env(t_mini *mini, t_token *temp, int *i, int *j)
 		*j = *j + 1;
 		return ("");
 	}
-	*j = *j + ft_strlen(get_env_value(temp_env));
-	return (get_env_value(temp_env));
+	return (replace_by_env_ret(env, temp_env, j));
 }
 
 void	print_token(t_mini *mini)
